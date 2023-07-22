@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "111178056428",
+    "project_id": "grapcoin-79dc6",
+    "storage_bucket": "grapcoin-79dc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111178056428:android:752a227d4555d956071bc9",
+        "android_client_info": {
+          "package_name": "com.kitendo.grapcoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111178056428-dj9fpshnumtkedg2aicv0ccbh35lfse8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVxoSwr_BrfX1QmHe-nhsuYKawRrF7WiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111178056428-dj9fpshnumtkedg2aicv0ccbh35lfse8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "111178056428-cgmckp7e6qclcmai6m91am96onk6vdmk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kitendo.grapcoin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

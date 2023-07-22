@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>466624784743-00joui9r559c5pe0u4urq2346hrluppc.apps.googleusercontent.com</string>
+	<string>111178056428-cgmckp7e6qclcmai6m91am96onk6vdmk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.466624784743-00joui9r559c5pe0u4urq2346hrluppc</string>
+	<string>com.googleusercontent.apps.111178056428-cgmckp7e6qclcmai6m91am96onk6vdmk</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBkuahvYyzhibenAUan-cVYemefeNp3Quo</string>
+	<string>AIzaSyDu5jpNHyk1SGlBFHSuvghSUb3x72gGEP4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>466624784743</string>
+	<string>111178056428</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.grapcoin.co</string>
+	<string>com.kitendo.grapcoin</string>
 	<key>PROJECT_ID</key>
-	<string>grapcoin-c5828</string>
+	<string>grapcoin-79dc6</string>
 	<key>STORAGE_BUCKET</key>
-	<string>grapcoin-c5828.appspot.com</string>
+	<string>grapcoin-79dc6.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:466624784743:ios:e4bb8957f02556c5c8e7c2</string>
+	<string>1:111178056428:ios:c35df288cd4d7849071bc9</string>
 </dict>
 </plist>

@@ -1,4 +1,4 @@
-package com.example.grapcoin
+package com.kitendo.grapcoin
 
 import io.flutter.embedding.android.FlutterActivity
 
