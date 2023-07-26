@@ -5,6 +5,7 @@ class CustomFormField extends StatelessWidget {
   const CustomFormField({
     super.key,
     this.isPassword = false,
+    this.onChanged,
     required this.controller,
     required this.focusNode,
     required this.hintText,
@@ -16,6 +17,7 @@ class CustomFormField extends StatelessWidget {
   final String hintText;
   final String labelText;
   final bool isPassword;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class CustomFormField extends StatelessWidget {
           validator: (_) {
             return null;
           },
+          onChanged: onChanged,
           autovalidateMode: AutovalidateMode.disabled,
           style: TextStyle(
             color: focusNode.hasFocus

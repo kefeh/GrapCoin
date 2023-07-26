@@ -16,11 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PhoneAuthState {
-  String get nameCountry => throw _privateConstructorUsedError;
-  String get codeCountry => throw _privateConstructorUsedError;
-  String get currentPhoneNumber => throw _privateConstructorUsedError;
-  String get oldPhoneNumber => throw _privateConstructorUsedError;
-  bool get onOtpScreen => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PhoneAuthStateCopyWith<PhoneAuthState> get copyWith =>
@@ -33,12 +30,7 @@ abstract class $PhoneAuthStateCopyWith<$Res> {
           PhoneAuthState value, $Res Function(PhoneAuthState) then) =
       _$PhoneAuthStateCopyWithImpl<$Res, PhoneAuthState>;
   @useResult
-  $Res call(
-      {String nameCountry,
-      String codeCountry,
-      String currentPhoneNumber,
-      String oldPhoneNumber,
-      bool onOtpScreen});
+  $Res call({String email, String password});
 }
 
 /// @nodoc
@@ -54,33 +46,18 @@ class _$PhoneAuthStateCopyWithImpl<$Res, $Val extends PhoneAuthState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? nameCountry = null,
-    Object? codeCountry = null,
-    Object? currentPhoneNumber = null,
-    Object? oldPhoneNumber = null,
-    Object? onOtpScreen = null,
+    Object? email = null,
+    Object? password = null,
   }) {
     return _then(_value.copyWith(
-      nameCountry: null == nameCountry
-          ? _value.nameCountry
-          : nameCountry // ignore: cast_nullable_to_non_nullable
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
-      codeCountry: null == codeCountry
-          ? _value.codeCountry
-          : codeCountry // ignore: cast_nullable_to_non_nullable
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
               as String,
-      currentPhoneNumber: null == currentPhoneNumber
-          ? _value.currentPhoneNumber
-          : currentPhoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      oldPhoneNumber: null == oldPhoneNumber
-          ? _value.oldPhoneNumber
-          : oldPhoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      onOtpScreen: null == onOtpScreen
-          ? _value.onOtpScreen
-          : onOtpScreen // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -93,12 +70,7 @@ abstract class _$$_PhoneAuthStateCopyWith<$Res>
       __$$_PhoneAuthStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String nameCountry,
-      String codeCountry,
-      String currentPhoneNumber,
-      String oldPhoneNumber,
-      bool onOtpScreen});
+  $Res call({String email, String password});
 }
 
 /// @nodoc
@@ -112,33 +84,18 @@ class __$$_PhoneAuthStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? nameCountry = null,
-    Object? codeCountry = null,
-    Object? currentPhoneNumber = null,
-    Object? oldPhoneNumber = null,
-    Object? onOtpScreen = null,
+    Object? email = null,
+    Object? password = null,
   }) {
     return _then(_$_PhoneAuthState(
-      nameCountry: null == nameCountry
-          ? _value.nameCountry
-          : nameCountry // ignore: cast_nullable_to_non_nullable
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
-      codeCountry: null == codeCountry
-          ? _value.codeCountry
-          : codeCountry // ignore: cast_nullable_to_non_nullable
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
               as String,
-      currentPhoneNumber: null == currentPhoneNumber
-          ? _value.currentPhoneNumber
-          : currentPhoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      oldPhoneNumber: null == oldPhoneNumber
-          ? _value.oldPhoneNumber
-          : oldPhoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      onOtpScreen: null == onOtpScreen
-          ? _value.onOtpScreen
-          : onOtpScreen // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -146,27 +103,16 @@ class __$$_PhoneAuthStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PhoneAuthState implements _PhoneAuthState {
-  _$_PhoneAuthState(
-      {required this.nameCountry,
-      required this.codeCountry,
-      required this.currentPhoneNumber,
-      required this.oldPhoneNumber,
-      required this.onOtpScreen});
+  _$_PhoneAuthState({required this.email, required this.password});
 
   @override
-  final String nameCountry;
+  final String email;
   @override
-  final String codeCountry;
-  @override
-  final String currentPhoneNumber;
-  @override
-  final String oldPhoneNumber;
-  @override
-  final bool onOtpScreen;
+  final String password;
 
   @override
   String toString() {
-    return 'PhoneAuthState(nameCountry: $nameCountry, codeCountry: $codeCountry, currentPhoneNumber: $currentPhoneNumber, oldPhoneNumber: $oldPhoneNumber, onOtpScreen: $onOtpScreen)';
+    return 'PhoneAuthState(email: $email, password: $password)';
   }
 
   @override
@@ -174,21 +120,13 @@ class _$_PhoneAuthState implements _PhoneAuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PhoneAuthState &&
-            (identical(other.nameCountry, nameCountry) ||
-                other.nameCountry == nameCountry) &&
-            (identical(other.codeCountry, codeCountry) ||
-                other.codeCountry == codeCountry) &&
-            (identical(other.currentPhoneNumber, currentPhoneNumber) ||
-                other.currentPhoneNumber == currentPhoneNumber) &&
-            (identical(other.oldPhoneNumber, oldPhoneNumber) ||
-                other.oldPhoneNumber == oldPhoneNumber) &&
-            (identical(other.onOtpScreen, onOtpScreen) ||
-                other.onOtpScreen == onOtpScreen));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.password, password) ||
+                other.password == password));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, nameCountry, codeCountry,
-      currentPhoneNumber, oldPhoneNumber, onOtpScreen);
+  int get hashCode => Object.hash(runtimeType, email, password);
 
   @JsonKey(ignore: true)
   @override
@@ -199,22 +137,13 @@ class _$_PhoneAuthState implements _PhoneAuthState {
 
 abstract class _PhoneAuthState implements PhoneAuthState {
   factory _PhoneAuthState(
-      {required final String nameCountry,
-      required final String codeCountry,
-      required final String currentPhoneNumber,
-      required final String oldPhoneNumber,
-      required final bool onOtpScreen}) = _$_PhoneAuthState;
+      {required final String email,
+      required final String password}) = _$_PhoneAuthState;
 
   @override
-  String get nameCountry;
+  String get email;
   @override
-  String get codeCountry;
-  @override
-  String get currentPhoneNumber;
-  @override
-  String get oldPhoneNumber;
-  @override
-  bool get onOtpScreen;
+  String get password;
   @override
   @JsonKey(ignore: true)
   _$$_PhoneAuthStateCopyWith<_$_PhoneAuthState> get copyWith =>

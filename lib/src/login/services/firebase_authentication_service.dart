@@ -25,4 +25,10 @@ class FirebaseAuthenticationService extends AuthenticationService {
     await auth.signInWithEmailAndPassword(email: email, password: password);
     authStreamSink.add(AuthenticationState.connected());
   }
+
+  @override
+  Future<void> signUpWithEmail(String email, String password) async {
+    await auth.createUserWithEmailAndPassword(email: email, password: password);
+    authStreamSink.add(AuthenticationState.connected());
+  }
 }

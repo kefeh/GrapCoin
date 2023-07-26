@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grapcoin/src/core/widgets/chat_button.dart';
+import 'package:grapcoin/src/login/routes/login_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -36,19 +38,47 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     loginAndRedirect(context);
 
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(
-              'Welcome to grapcoin!',
+            const Text(
+              'Welcome to \ngrapcoin!',
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
             ),
-            Text(
-              'Loading...',
+            const Text(
+              'Your Ultimate hub for seemless connections',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
+            Column(
+              children: [
+                ChatButton.primary(
+                  text: 'Login',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 12),
+                ChatButton.outlined(
+                  text: 'Sign Up',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(
+                          isSignUp: true,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),

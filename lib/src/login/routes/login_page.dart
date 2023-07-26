@@ -10,13 +10,13 @@ class LoginPage extends ConsumerStatefulWidget {
     super.key,
     this.successRouteUri,
     this.loggedOut = false,
-    this.namePage = false,
+    this.isSignUp = false,
   });
 
   final String? successRouteUri;
   final bool loggedOut;
   //if we should display the name page or login page
-  final bool namePage;
+  final bool isSignUp;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LoginPageState();
@@ -42,7 +42,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const EmailAndPasswordLogin();
+    return EmailAndPasswordLogin(isSignUp: widget.isSignUp);
   }
 }
 

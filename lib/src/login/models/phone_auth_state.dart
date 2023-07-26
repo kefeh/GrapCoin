@@ -5,10 +5,7 @@ part 'phone_auth_state.freezed.dart';
 @freezed
 class PhoneAuthState with _$PhoneAuthState {
   factory PhoneAuthState({
-    required String nameCountry,
-    required String codeCountry,
-    required String currentPhoneNumber,
-    required String oldPhoneNumber,
-    required bool onOtpScreen,
+    required String email,
+    required String password,
   }) = _PhoneAuthState;
 }
