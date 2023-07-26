@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grapcoin/src/core/widgets/chat_button.dart';
+import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/services/authentication_service.dart';
 import 'package:grapcoin/src/login/services/firebase_authentication_service.dart';
-import 'package:grapcoin/src/login/widgets/sign_in_screen_skeleton.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authServiceProvider = Provider<AuthenticationService>((ref) {
@@ -29,11 +30,15 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   GlobalKey<FormState> formKey = GlobalKey();
   late TextEditingController emailController;
   late TextEditingController passwordController;
+  late FocusNode emailFocusNode;
+  late FocusNode passwordFocusNode;
 
   @override
   void initState() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    emailFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
     super.initState();
   }
 
@@ -46,6 +51,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   ///phone number variable holding the phone number used in the first step
   @override
   Widget build(BuildContext context) {
+    const hintText = 'Enter your email';
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56),
@@ -58,55 +64,44 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         ),
       ),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            reverse: true,
-            child: Column(
-              children: [
-                SignInScreenSkeleton(
-                  child: Form(
-                    key: formKey,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 500),
-                      padding: const EdgeInsets.all(8),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32),
+                    child: Form(
+                      key: formKey,
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 500),
+                        padding: const EdgeInsets.all(8),
                         child: Column(
                           children: [
-                            TextFormField(
+                            CustomFormField(
                               controller: emailController,
-                              validator: (_) {
-                                return null;
-                              },
-                              autovalidateMode: AutovalidateMode.disabled,
-                              decoration: const InputDecoration(
-                                hintText: 'Type your email',
-                                labelText: 'email',
-                                border: OutlineInputBorder(),
-                                errorMaxLines: 2,
-                              ),
+                              focusNode: emailFocusNode,
+                              hintText: hintText,
+                              labelText: 'Email',
                             ),
-                            TextFormField(
+                            const SizedBox(height: 20),
+                            CustomFormField(
+                              isPassword: true,
                               controller: passwordController,
-                              validator: (_) {
-                                return null;
-                              },
-                              autovalidateMode: AutovalidateMode.disabled,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                hintText: 'password',
-                                labelText: 'Password',
-                                border: OutlineInputBorder(),
-                                errorMaxLines: 2,
-                              ),
-                            ),
+                              focusNode: passwordFocusNode,
+                              hintText: 'Enter password',
+                              labelText: 'Password',
+                            )
                           ],
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  ChatButton.primary(text: "signin"),
+                ],
+              ),
             ),
           ),
         ),
