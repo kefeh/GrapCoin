@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/helpers/providers.dart';
@@ -67,7 +68,12 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   ///phone number variable holding the phone number used in the first step
   @override
   Widget build(BuildContext context) {
+    final welcomeTitle = widget.isSignUp ? 'Welcome back' : "Hello there 👋";
+    final welcomeMessage = widget.isSignUp
+        ? "Welcome to you, with your email and password create your account"
+        : 'Log in to your account to continue';
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56),
         child: AppBar(
@@ -85,29 +91,52 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Form(
-                      key: formKey,
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 500),
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
+            child: Column(
+              children: [
+                Form(
+                  key: formKey,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                welcomeTitle,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                welcomeMessage,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: blackLight,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        CustomFormField(
+                          controller: emailController,
+                          focusNode: emailFocusNode,
+                          hintText: 'Enter your email',
+                          labelText: 'Email',
+                          onChanged: ref
+                              .watch(phoneAuthProvider.notifier)
+                              .onEmailChange,
+                        ),
+                        const SizedBox(height: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            CustomFormField(
-                              controller: emailController,
-                              focusNode: emailFocusNode,
-                              hintText: 'Enter your email',
-                              labelText: 'Email',
-                              onChanged: ref
-                                  .watch(phoneAuthProvider.notifier)
-                                  .onEmailChange,
-                            ),
-                            const SizedBox(height: 20),
                             CustomFormField(
                               isPassword: true,
                               controller: passwordController,
@@ -117,17 +146,29 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                               onChanged: ref
                                   .watch(phoneAuthProvider.notifier)
                                   .onPasswordChange,
-                            )
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text(
+                                "Forgot password",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: purple,
+                                ),
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
+                        )
+                      ],
                     ),
                   ),
-                  ChatButton.primary(
-                      text: widget.isSignUp ? 'Sign Up' : 'Login',
-                      onPressed: widget.isSignUp ? signUp : signIn),
-                ],
-              ),
+                ),
+                SizedBox(height: MediaQuery.maybeOf(context)!.size.height / 8),
+                ChatButton.primary(
+                    text: widget.isSignUp ? 'Sign Up' : 'Login',
+                    onPressed: widget.isSignUp ? signUp : signIn),
+              ],
             ),
           ),
         ),

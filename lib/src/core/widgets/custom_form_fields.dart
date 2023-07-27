@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grapcoin/src/constants/constants.dart';
+import 'package:grapcoin/src/constants/colors.dart';
 
-class CustomFormField extends StatelessWidget {
+class CustomFormField extends StatefulWidget {
   const CustomFormField({
     super.key,
     this.isPassword = false,
@@ -20,30 +20,54 @@ class CustomFormField extends StatelessWidget {
   final void Function(String)? onChanged;
 
   @override
+  State<CustomFormField> createState() => _CustomFormFieldState();
+}
+
+class _CustomFormFieldState extends State<CustomFormField> {
+  bool hide = true;
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(labelText),
+        Text(
+          widget.labelText,
+          style: const TextStyle(
+            color: blackLight,
+            fontSize: 12,
+          ),
+        ),
         const SizedBox(height: 4),
         TextFormField(
           // controller: controller,
-          obscureText: isPassword,
+          obscureText: hide && widget.isPassword,
           validator: (_) {
             return null;
           },
-          onChanged: onChanged,
+          onChanged: widget.onChanged,
           autovalidateMode: AutovalidateMode.disabled,
           style: TextStyle(
-            color: focusNode.hasFocus
+            color: widget.focusNode.hasFocus
                 ? Theme.of(context).colorScheme.primary
                 : const Color.fromRGBO(11, 11, 54, 1),
-            fontSize: 14,
+            fontSize: 12,
           ),
           decoration: InputDecoration(
-            hintText: hintText,
+            suffixIcon: widget.isPassword
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        hide = !hide;
+                      });
+                    },
+                    child: Icon(
+                      hide ? Icons.visibility_off : Icons.visibility,
+                    ),
+                  )
+                : null,
+            hintText: widget.hintText,
             errorMaxLines: 2,
-            filled: focusNode.hasFocus ? false : true,
+            filled: widget.focusNode.hasFocus ? false : true,
             fillColor: purpleLighter,
             isDense: true,
             contentPadding: const EdgeInsets.fromLTRB(14, 16, 12, 16),

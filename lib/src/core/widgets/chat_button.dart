@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grapcoin/src/constants/constants.dart';
+import 'package:grapcoin/src/constants/colors.dart';
 
 class ChatButton extends StatelessWidget {
   const ChatButton._({
