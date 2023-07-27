@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
-import 'package:grapcoin/src/login/routes/login_page.dart';
+import 'package:grapcoin/src/login/routes/phone_login_in.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -62,7 +62,7 @@ class WelcomePage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
+                          builder: (context) => const EmailAndPasswordLogin(),
                         ),
                       );
                     },
@@ -73,7 +73,7 @@ class WelcomePage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const LoginPage(
+                          builder: (context) => const EmailAndPasswordLogin(
                             isSignUp: true,
                           ),
                         ),

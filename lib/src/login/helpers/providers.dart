@@ -5,7 +5,7 @@ import 'package:grapcoin/src/login/services/firebase_authentication_service.dart
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final phoneAuthProvider =
-    StateNotifierProvider<PhoneAuthNotifier, PhoneAuthState>(
+    StateNotifierProvider.autoDispose<PhoneAuthNotifier, PhoneAuthState>(
   (ref) => PhoneAuthNotifier(),
 );
 final authServiceProvider = Provider<AuthenticationService>((ref) {

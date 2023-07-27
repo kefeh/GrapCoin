@@ -4,7 +4,7 @@ import 'package:grapcoin/src/core/helpers/value_failure.dart';
 
 Either<ValueFailure<String>, String> validateEmailAddress(String input) {
   // if (input.isEmpty) return left(ValueFailure.empty(failedValue: input));
-  if (input.isEmpty) return right(input);
+  if (input.isEmpty) return left(ValueFailure.empty(failedValue: input));
 
   if (RegExp(EMAIL_REGEX_PATTERN).hasMatch(input)) return right(input);
 

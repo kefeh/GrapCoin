@@ -4,6 +4,8 @@ import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/helpers/providers.dart';
+import 'package:grapcoin/src/login/models/email_address.dart';
+import 'package:grapcoin/src/login/models/password.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -25,6 +27,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   late TextEditingController passwordController;
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
+  bool shouldValidate = false;
 
   @override
   void initState() {
@@ -44,8 +47,8 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   void signIn() async {
     final phoneAuthState = ref.watch(phoneAuthProvider);
     await ref.watch(authServiceProvider).signInWithEmail(
-          phoneAuthState.email,
-          phoneAuthState.password,
+          phoneAuthState.email.getOrEmpty(),
+          phoneAuthState.password.getOrEmpty(),
         );
     final user = FirebaseAuth.instance.currentUser;
     final serviceUser = UserService.instance.currentUser;
@@ -56,13 +59,17 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   void signUp() async {
     final phoneAuthState = ref.watch(phoneAuthProvider);
     await ref.watch(authServiceProvider).signUpWithEmail(
-          phoneAuthState.email,
-          phoneAuthState.password,
+          phoneAuthState.email.getOrEmpty(),
+          phoneAuthState.password.getOrEmpty(),
         );
     final user = FirebaseAuth.instance.currentUser;
     final serviceUser = UserService.instance.currentUser;
     print(user);
     print(serviceUser);
+  }
+
+  submit() {
+    return widget.isSignUp ? signUp : signIn;
   }
 
   ///phone number variable holding the phone number used in the first step
@@ -72,6 +79,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     final welcomeMessage = widget.isSignUp
         ? "Welcome to you, with your email and password create your account"
         : 'Log in to your account to continue';
+    final buttonText = widget.isSignUp ? 'Sign Up' : 'Login';
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -95,6 +103,9 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
               children: [
                 Form(
                   key: formKey,
+                  autovalidateMode: shouldValidate
+                      ? AutovalidateMode.onUserInteraction
+                      : null,
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     child: Column(
@@ -132,6 +143,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                           onChanged: ref
                               .watch(phoneAuthProvider.notifier)
                               .onEmailChange,
+                          validator: getEmailErrorStringOrNull,
                         ),
                         const SizedBox(height: 20),
                         Column(
@@ -143,6 +155,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                               focusNode: passwordFocusNode,
                               hintText: 'Enter password',
                               labelText: 'Password',
+                              validator: getPasswordErrorStringOrNull,
                               onChanged: ref
                                   .watch(phoneAuthProvider.notifier)
                                   .onPasswordChange,
@@ -165,14 +178,56 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.maybeOf(context)!.size.height / 8),
-                ChatButton.primary(
-                    text: widget.isSignUp ? 'Sign Up' : 'Login',
-                    onPressed: widget.isSignUp ? signUp : signIn),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: ref
+                          .watch(phoneAuthProvider.notifier)
+                          .isValidPhoneAuthState()
+                      ? ChatButton.primary(
+                          text: buttonText,
+                          onPressed: submit,
+                        )
+                      : ChatButton.outlined(
+                          text: buttonText,
+                          isTransparent: true,
+                          onPressed: () {
+                            setState(() {
+                              shouldValidate = true;
+                            });
+                            formKey.currentState!.validate();
+                          },
+                        ),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  String? getEmailErrorStringOrNull(String? emailString) {
+    final emailValue = EmailAddress(emailString ?? '').value;
+    return emailValue.fold(
+      (l) => l.maybeMap(
+        invalidEmail: (_) => "invalid email address",
+        empty: (_) => "Email is required",
+        orElse: () => '',
+      ),
+      (r) => null,
+    );
+  }
+
+  String? getPasswordErrorStringOrNull(String? passwordString) {
+    final passwordValue = Password(passwordString ?? '').value;
+    return passwordValue.fold(
+      (l) => l.maybeMap(
+        weakPassword: (_) =>
+            "Password should include a character, number, symbol and at least 8 letters long",
+        empty: (_) => "Password is required",
+        orElse: () => '',
+      ),
+      (r) => null,
     );
   }
 }

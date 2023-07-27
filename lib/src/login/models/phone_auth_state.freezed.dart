@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PhoneAuthState {
-  String get email => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
+  EmailAddress get email => throw _privateConstructorUsedError;
+  Password get password => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PhoneAuthStateCopyWith<PhoneAuthState> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $PhoneAuthStateCopyWith<$Res> {
           PhoneAuthState value, $Res Function(PhoneAuthState) then) =
       _$PhoneAuthStateCopyWithImpl<$Res, PhoneAuthState>;
   @useResult
-  $Res call({String email, String password});
+  $Res call({EmailAddress email, Password password});
 }
 
 /// @nodoc
@@ -53,11 +53,11 @@ class _$PhoneAuthStateCopyWithImpl<$Res, $Val extends PhoneAuthState>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as EmailAddress,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Password,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$_PhoneAuthStateCopyWith<$Res>
       __$$_PhoneAuthStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String email, String password});
+  $Res call({EmailAddress email, Password password});
 }
 
 /// @nodoc
@@ -91,11 +91,11 @@ class __$$_PhoneAuthStateCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as EmailAddress,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Password,
     ));
   }
 }
@@ -106,9 +106,9 @@ class _$_PhoneAuthState implements _PhoneAuthState {
   _$_PhoneAuthState({required this.email, required this.password});
 
   @override
-  final String email;
+  final EmailAddress email;
   @override
-  final String password;
+  final Password password;
 
   @override
   String toString() {
@@ -137,13 +137,13 @@ class _$_PhoneAuthState implements _PhoneAuthState {
 
 abstract class _PhoneAuthState implements PhoneAuthState {
   factory _PhoneAuthState(
-      {required final String email,
-      required final String password}) = _$_PhoneAuthState;
+      {required final EmailAddress email,
+      required final Password password}) = _$_PhoneAuthState;
 
   @override
-  String get email;
+  EmailAddress get email;
   @override
-  String get password;
+  Password get password;
   @override
   @JsonKey(ignore: true)
   _$$_PhoneAuthStateCopyWith<_$_PhoneAuthState> get copyWith =>

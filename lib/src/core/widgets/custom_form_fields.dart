@@ -6,6 +6,7 @@ class CustomFormField extends StatefulWidget {
     super.key,
     this.isPassword = false,
     this.onChanged,
+    this.validator,
     required this.controller,
     required this.focusNode,
     required this.hintText,
@@ -18,6 +19,7 @@ class CustomFormField extends StatefulWidget {
   final String labelText;
   final bool isPassword;
   final void Function(String)? onChanged;
+  final String? Function(String?)? validator;
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
@@ -41,9 +43,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         TextFormField(
           // controller: controller,
           obscureText: hide && widget.isPassword,
-          validator: (_) {
-            return null;
-          },
+          validator: widget.validator,
           onChanged: widget.onChanged,
           autovalidateMode: AutovalidateMode.disabled,
           style: TextStyle(
