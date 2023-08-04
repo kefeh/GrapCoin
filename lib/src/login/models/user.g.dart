@@ -15,6 +15,7 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
+      'nameToDisplay': instance.nameToDisplay,
       'uid': instance.uid,
       'name': instance.name,
       'userNameSensitiveCase': instance.userNameSensitiveCase,

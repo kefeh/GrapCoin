@@ -21,6 +21,7 @@ mixin _$AuthenticationState {
     required TResult Function() disconnected,
     required TResult Function() loading,
     required TResult Function() connected,
+    required TResult Function(AuthError error) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$AuthenticationState {
     TResult? Function()? disconnected,
     TResult? Function()? loading,
     TResult? Function()? connected,
+    TResult? Function(AuthError error)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$AuthenticationState {
     TResult Function()? disconnected,
     TResult Function()? loading,
     TResult Function()? connected,
+    TResult Function(AuthError error)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -44,6 +47,7 @@ mixin _$AuthenticationState {
         disconnected,
     required TResult Function(_AuthenticationStateLoading value) loading,
     required TResult Function(_AuthenticationStateConnected value) connected,
+    required TResult Function(_AuthenticationStateFailed value) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,6 +55,7 @@ mixin _$AuthenticationState {
     TResult? Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult? Function(_AuthenticationStateLoading value)? loading,
     TResult? Function(_AuthenticationStateConnected value)? connected,
+    TResult? Function(_AuthenticationStateFailed value)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -58,6 +63,7 @@ mixin _$AuthenticationState {
     TResult Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult Function(_AuthenticationStateLoading value)? loading,
     TResult Function(_AuthenticationStateConnected value)? connected,
+    TResult Function(_AuthenticationStateFailed value)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -127,6 +133,7 @@ class _$_AuthenticationStateDisconnected
     required TResult Function() disconnected,
     required TResult Function() loading,
     required TResult Function() connected,
+    required TResult Function(AuthError error) failed,
   }) {
     return disconnected();
   }
@@ -137,6 +144,7 @@ class _$_AuthenticationStateDisconnected
     TResult? Function()? disconnected,
     TResult? Function()? loading,
     TResult? Function()? connected,
+    TResult? Function(AuthError error)? failed,
   }) {
     return disconnected?.call();
   }
@@ -147,6 +155,7 @@ class _$_AuthenticationStateDisconnected
     TResult Function()? disconnected,
     TResult Function()? loading,
     TResult Function()? connected,
+    TResult Function(AuthError error)? failed,
     required TResult orElse(),
   }) {
     if (disconnected != null) {
@@ -162,6 +171,7 @@ class _$_AuthenticationStateDisconnected
         disconnected,
     required TResult Function(_AuthenticationStateLoading value) loading,
     required TResult Function(_AuthenticationStateConnected value) connected,
+    required TResult Function(_AuthenticationStateFailed value) failed,
   }) {
     return disconnected(this);
   }
@@ -172,6 +182,7 @@ class _$_AuthenticationStateDisconnected
     TResult? Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult? Function(_AuthenticationStateLoading value)? loading,
     TResult? Function(_AuthenticationStateConnected value)? connected,
+    TResult? Function(_AuthenticationStateFailed value)? failed,
   }) {
     return disconnected?.call(this);
   }
@@ -182,6 +193,7 @@ class _$_AuthenticationStateDisconnected
     TResult Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult Function(_AuthenticationStateLoading value)? loading,
     TResult Function(_AuthenticationStateConnected value)? connected,
+    TResult Function(_AuthenticationStateFailed value)? failed,
     required TResult orElse(),
   }) {
     if (disconnected != null) {
@@ -241,6 +253,7 @@ class _$_AuthenticationStateLoading implements _AuthenticationStateLoading {
     required TResult Function() disconnected,
     required TResult Function() loading,
     required TResult Function() connected,
+    required TResult Function(AuthError error) failed,
   }) {
     return loading();
   }
@@ -251,6 +264,7 @@ class _$_AuthenticationStateLoading implements _AuthenticationStateLoading {
     TResult? Function()? disconnected,
     TResult? Function()? loading,
     TResult? Function()? connected,
+    TResult? Function(AuthError error)? failed,
   }) {
     return loading?.call();
   }
@@ -261,6 +275,7 @@ class _$_AuthenticationStateLoading implements _AuthenticationStateLoading {
     TResult Function()? disconnected,
     TResult Function()? loading,
     TResult Function()? connected,
+    TResult Function(AuthError error)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -276,6 +291,7 @@ class _$_AuthenticationStateLoading implements _AuthenticationStateLoading {
         disconnected,
     required TResult Function(_AuthenticationStateLoading value) loading,
     required TResult Function(_AuthenticationStateConnected value) connected,
+    required TResult Function(_AuthenticationStateFailed value) failed,
   }) {
     return loading(this);
   }
@@ -286,6 +302,7 @@ class _$_AuthenticationStateLoading implements _AuthenticationStateLoading {
     TResult? Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult? Function(_AuthenticationStateLoading value)? loading,
     TResult? Function(_AuthenticationStateConnected value)? connected,
+    TResult? Function(_AuthenticationStateFailed value)? failed,
   }) {
     return loading?.call(this);
   }
@@ -296,6 +313,7 @@ class _$_AuthenticationStateLoading implements _AuthenticationStateLoading {
     TResult Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult Function(_AuthenticationStateLoading value)? loading,
     TResult Function(_AuthenticationStateConnected value)? connected,
+    TResult Function(_AuthenticationStateFailed value)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -354,6 +372,7 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
     required TResult Function() disconnected,
     required TResult Function() loading,
     required TResult Function() connected,
+    required TResult Function(AuthError error) failed,
   }) {
     return connected();
   }
@@ -364,6 +383,7 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
     TResult? Function()? disconnected,
     TResult? Function()? loading,
     TResult? Function()? connected,
+    TResult? Function(AuthError error)? failed,
   }) {
     return connected?.call();
   }
@@ -374,6 +394,7 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
     TResult Function()? disconnected,
     TResult Function()? loading,
     TResult Function()? connected,
+    TResult Function(AuthError error)? failed,
     required TResult orElse(),
   }) {
     if (connected != null) {
@@ -389,6 +410,7 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
         disconnected,
     required TResult Function(_AuthenticationStateLoading value) loading,
     required TResult Function(_AuthenticationStateConnected value) connected,
+    required TResult Function(_AuthenticationStateFailed value) failed,
   }) {
     return connected(this);
   }
@@ -399,6 +421,7 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
     TResult? Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult? Function(_AuthenticationStateLoading value)? loading,
     TResult? Function(_AuthenticationStateConnected value)? connected,
+    TResult? Function(_AuthenticationStateFailed value)? failed,
   }) {
     return connected?.call(this);
   }
@@ -409,6 +432,7 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
     TResult Function(_AuthenticationStateDisconnected value)? disconnected,
     TResult Function(_AuthenticationStateLoading value)? loading,
     TResult Function(_AuthenticationStateConnected value)? connected,
+    TResult Function(_AuthenticationStateFailed value)? failed,
     required TResult orElse(),
   }) {
     if (connected != null) {
@@ -420,4 +444,155 @@ class _$_AuthenticationStateConnected implements _AuthenticationStateConnected {
 
 abstract class _AuthenticationStateConnected implements AuthenticationState {
   factory _AuthenticationStateConnected() = _$_AuthenticationStateConnected;
+}
+
+/// @nodoc
+abstract class _$$_AuthenticationStateFailedCopyWith<$Res> {
+  factory _$$_AuthenticationStateFailedCopyWith(
+          _$_AuthenticationStateFailed value,
+          $Res Function(_$_AuthenticationStateFailed) then) =
+      __$$_AuthenticationStateFailedCopyWithImpl<$Res>;
+  @useResult
+  $Res call({AuthError error});
+}
+
+/// @nodoc
+class __$$_AuthenticationStateFailedCopyWithImpl<$Res>
+    extends _$AuthenticationStateCopyWithImpl<$Res,
+        _$_AuthenticationStateFailed>
+    implements _$$_AuthenticationStateFailedCopyWith<$Res> {
+  __$$_AuthenticationStateFailedCopyWithImpl(
+      _$_AuthenticationStateFailed _value,
+      $Res Function(_$_AuthenticationStateFailed) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_$_AuthenticationStateFailed(
+      error: null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as AuthError,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_AuthenticationStateFailed implements _AuthenticationStateFailed {
+  _$_AuthenticationStateFailed({required this.error});
+
+  @override
+  final AuthError error;
+
+  @override
+  String toString() {
+    return 'AuthenticationState.failed(error: $error)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_AuthenticationStateFailed &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_AuthenticationStateFailedCopyWith<_$_AuthenticationStateFailed>
+      get copyWith => __$$_AuthenticationStateFailedCopyWithImpl<
+          _$_AuthenticationStateFailed>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() disconnected,
+    required TResult Function() loading,
+    required TResult Function() connected,
+    required TResult Function(AuthError error) failed,
+  }) {
+    return failed(error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? disconnected,
+    TResult? Function()? loading,
+    TResult? Function()? connected,
+    TResult? Function(AuthError error)? failed,
+  }) {
+    return failed?.call(error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? disconnected,
+    TResult Function()? loading,
+    TResult Function()? connected,
+    TResult Function(AuthError error)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AuthenticationStateDisconnected value)
+        disconnected,
+    required TResult Function(_AuthenticationStateLoading value) loading,
+    required TResult Function(_AuthenticationStateConnected value) connected,
+    required TResult Function(_AuthenticationStateFailed value) failed,
+  }) {
+    return failed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AuthenticationStateDisconnected value)? disconnected,
+    TResult? Function(_AuthenticationStateLoading value)? loading,
+    TResult? Function(_AuthenticationStateConnected value)? connected,
+    TResult? Function(_AuthenticationStateFailed value)? failed,
+  }) {
+    return failed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AuthenticationStateDisconnected value)? disconnected,
+    TResult Function(_AuthenticationStateLoading value)? loading,
+    TResult Function(_AuthenticationStateConnected value)? connected,
+    TResult Function(_AuthenticationStateFailed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AuthenticationStateFailed implements AuthenticationState {
+  factory _AuthenticationStateFailed({required final AuthError error}) =
+      _$_AuthenticationStateFailed;
+
+  AuthError get error;
+  @JsonKey(ignore: true)
+  _$$_AuthenticationStateFailedCopyWith<_$_AuthenticationStateFailed>
+      get copyWith => throw _privateConstructorUsedError;
 }

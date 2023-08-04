@@ -28,12 +28,15 @@ dependencies:
   freezed_annotation: ^2.4.1
   firebase_core: ^2.15.0
   dartz: ^0.10.1
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   build_runner: ^2.4.6
+  riverpod_generator:
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true

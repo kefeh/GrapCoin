@@ -18,6 +18,6 @@ class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: true, includeFromJson: false)
   String get nameToDisplay => userNameSensitiveCase ?? name;
 }

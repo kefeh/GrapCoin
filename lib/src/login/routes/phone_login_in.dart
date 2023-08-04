@@ -4,12 +4,13 @@ import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/helpers/providers.dart';
+import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/models/email_address.dart';
 import 'package:grapcoin/src/login/models/password.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class EmailAndPasswordLogin extends StatefulHookConsumerWidget {
+class EmailAndPasswordLogin extends ConsumerStatefulWidget {
   const EmailAndPasswordLogin({
     super.key,
     this.isSignUp = false,
@@ -69,7 +70,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   }
 
   submit() {
-    return widget.isSignUp ? signUp : signIn;
+    return widget.isSignUp ? signUp() : signIn();
   }
 
   ///phone number variable holding the phone number used in the first step
@@ -80,6 +81,51 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         ? "Welcome to you, with your email and password create your account"
         : 'Log in to your account to continue';
     final buttonText = widget.isSignUp ? 'Sign Up' : 'Login';
+
+    // ref.listen(
+    //   signUpProvider,
+    //   (previous, next) {
+    //     next.whenOrNull(
+    //       error: (error, _) {
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(content: Text(error.toString())),
+    //         );
+    //       },
+    //     );
+    //   },
+    // );
+
+    ref.watch(authServiceProvider).authState.listen(
+      (event) {
+        event.mapOrNull(
+          failed: (value) {
+            switch (value.error) {
+              case AuthErrorUnknown():
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(value.toString())),
+                );
+                break;
+              case AuthErrorProjectNotFound():
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(value.toString())),
+                );
+                break;
+              case AuthErrorUserNotFound():
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(value.toString())),
+                );
+                break;
+              case AuthErrorEmailInUse():
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(value.toString())),
+                );
+                break;
+            }
+          },
+        );
+      },
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(

@@ -36,7 +36,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    loginAndRedirect(context);
+    // loginAndRedirect(context);
 
     return Scaffold(
       body: Padding(

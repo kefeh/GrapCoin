@@ -22,13 +22,30 @@ class FirebaseAuthenticationService extends AuthenticationService {
 
   @override
   Future<void> signInWithEmail(String email, String password) async {
-    await auth.signInWithEmailAndPassword(email: email, password: password);
-    authStreamSink.add(AuthenticationState.connected());
+    try {
+      authStreamSink.add(AuthenticationState.loading());
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      authStreamSink.add(AuthenticationState.connected());
+    } on FirebaseAuthException catch (error) {
+      authStreamSink
+          .add(AuthenticationState.failed(error: AuthError.from(error)));
+    } on Exception {
+      AuthenticationState.failed(error: const AuthErrorUnknown());
+    }
   }
 
   @override
   Future<void> signUpWithEmail(String email, String password) async {
-    await auth.createUserWithEmailAndPassword(email: email, password: password);
-    authStreamSink.add(AuthenticationState.connected());
+    try {
+      authStreamSink.add(AuthenticationState.loading());
+      await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      authStreamSink.add(AuthenticationState.connected());
+    } on FirebaseAuthException catch (error) {
+      authStreamSink
+          .add(AuthenticationState.failed(error: AuthError.from(error)));
+    } on Exception {
+      AuthenticationState.failed(error: const AuthErrorUnknown());
+    }
   }
 }
