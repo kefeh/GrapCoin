@@ -15,6 +15,7 @@ const authErrorMapping = {
   'user-not-found': AuthErrorUserNotFound(),
   'project-not-found': AuthErrorProjectNotFound(),
   'email-already-in-use': AuthErrorEmailInUse(),
+  'wrong-password': AuthErrorWrongCredentials(),
 };
 
 @immutable
@@ -42,4 +43,9 @@ class AuthErrorEmailInUse implements AuthError {
 @immutable
 class AuthErrorProjectNotFound implements AuthError {
   const AuthErrorProjectNotFound();
+}
+
+@immutable
+class AuthErrorWrongCredentials implements AuthError {
+  const AuthErrorWrongCredentials();
 }

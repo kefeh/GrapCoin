@@ -135,8 +135,12 @@ class ChatButton extends StatelessWidget {
               ),
             ],
             if (isLoading)
-              CircularProgressIndicator.adaptive(
-                valueColor: AlwaysStoppedAnimation<Color>(textColor),
+              SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(textColor),
+                ),
               )
             else
               child != null

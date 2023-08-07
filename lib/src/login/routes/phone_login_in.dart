@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
@@ -7,7 +6,6 @@ import 'package:grapcoin/src/login/helpers/providers.dart';
 import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/models/email_address.dart';
 import 'package:grapcoin/src/login/models/password.dart';
-import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class EmailAndPasswordLogin extends ConsumerStatefulWidget {
@@ -29,6 +27,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
   bool shouldValidate = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -36,6 +35,71 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     passwordController = TextEditingController();
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
+
+    Future.microtask(() {
+      ref.read(authServiceProvider).authState.listen(
+        (event) {
+          event.maybeMap(
+            orElse: () {
+              setState(() {
+                isLoading = true;
+              });
+            },
+            failed: (value) {
+              setState(() {
+                isLoading = false;
+              });
+              switch (value.error) {
+                case AuthErrorUnknown():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text('An unknown error occured, please try again'),
+                    ),
+                  );
+                  break;
+                case AuthErrorProjectNotFound():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'This project does not seem to exist, please contact your administrator'),
+                    ),
+                  );
+                  break;
+                case AuthErrorUserNotFound():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'You dont seem to have an account, please sign up'),
+                    ),
+                  );
+                  break;
+                case AuthErrorEmailInUse():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'An account associated to this email already exist, please log in'),
+                    ),
+                  );
+                  break;
+                case AuthErrorWrongCredentials():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('The password is not correct, try again'),
+                    ),
+                  );
+                  break;
+              }
+            },
+            loading: (_) {
+              setState(() {
+                isLoading = true;
+              });
+            },
+          );
+        },
+      );
+    });
     super.initState();
   }
 
@@ -51,10 +115,6 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
           phoneAuthState.email.getOrEmpty(),
           phoneAuthState.password.getOrEmpty(),
         );
-    final user = FirebaseAuth.instance.currentUser;
-    final serviceUser = UserService.instance.currentUser;
-    print(user);
-    print(serviceUser);
   }
 
   void signUp() async {
@@ -63,10 +123,6 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
           phoneAuthState.email.getOrEmpty(),
           phoneAuthState.password.getOrEmpty(),
         );
-    final user = FirebaseAuth.instance.currentUser;
-    final serviceUser = UserService.instance.currentUser;
-    print(user);
-    print(serviceUser);
   }
 
   submit() {
@@ -94,37 +150,6 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     //     );
     //   },
     // );
-
-    ref.watch(authServiceProvider).authState.listen(
-      (event) {
-        event.mapOrNull(
-          failed: (value) {
-            switch (value.error) {
-              case AuthErrorUnknown():
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(value.toString())),
-                );
-                break;
-              case AuthErrorProjectNotFound():
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(value.toString())),
-                );
-                break;
-              case AuthErrorUserNotFound():
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(value.toString())),
-                );
-                break;
-              case AuthErrorEmailInUse():
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(value.toString())),
-                );
-                break;
-            }
-          },
-        );
-      },
-    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -236,6 +261,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                           ? ChatButton.primary(
                               text: buttonText,
                               onPressed: submit,
+                              isLoading: isLoading,
                             )
                           : ChatButton.outlined(
                               text: buttonText,
