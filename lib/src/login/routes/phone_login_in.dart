@@ -224,25 +224,33 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.maybeOf(context)!.size.height / 8),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: ref
-                          .watch(phoneAuthProvider.notifier)
-                          .isValidPhoneAuthState()
-                      ? ChatButton.primary(
-                          text: buttonText,
-                          onPressed: submit,
-                        )
-                      : ChatButton.outlined(
-                          text: buttonText,
-                          isTransparent: true,
-                          onPressed: () {
-                            setState(() {
-                              shouldValidate = true;
-                            });
-                            formKey.currentState!.validate();
-                          },
-                        ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: ref
+                              .watch(phoneAuthProvider.notifier)
+                              .isValidPhoneAuthState()
+                          ? ChatButton.primary(
+                              text: buttonText,
+                              onPressed: submit,
+                            )
+                          : ChatButton.outlined(
+                              text: buttonText,
+                              isTransparent: true,
+                              onPressed: () {
+                                setState(() {
+                                  shouldValidate = true;
+                                });
+                                formKey.currentState!.validate();
+                              },
+                            ),
+                    ),
+                    const SizedBox(height: 16),
+                    AlternativeOnboarding(isSignUp: widget.isSignUp),
+                  ],
                 ),
               ],
             ),
@@ -274,6 +282,40 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         orElse: () => '',
       ),
       (r) => null,
+    );
+  }
+}
+
+class AlternativeOnboarding extends StatelessWidget {
+  const AlternativeOnboarding({
+    super.key,
+    this.isSignUp = false,
+  });
+  final bool isSignUp;
+
+  @override
+  Widget build(BuildContext context) {
+    String message = isSignUp
+        ? "Do you have an account, try "
+        : "If you don't have an account, try ";
+    String cta = isSignUp ? "sign in" : "sign up";
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(message),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => EmailAndPasswordLogin(
+                  isSignUp: !isSignUp,
+                ),
+              ),
+            );
+          },
+          child: Text(cta, style: const TextStyle(color: purple)),
+        )
+      ],
     );
   }
 }
