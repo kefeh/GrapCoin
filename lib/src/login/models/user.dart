@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grapcoin/src/util/json_converters.dart';
 
@@ -13,7 +15,7 @@ class User with _$User {
     String? userNameSensitiveCase,
     @JsonKey(toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
     required DateTime? registeredAt,
-    String? phoneNumber,
+    String? email,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

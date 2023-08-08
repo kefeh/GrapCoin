@@ -18,3 +18,17 @@ Either<ValueFailure<String>, String> validatePassword(String input) {
   if (input.length >= 8 && regExp.hasMatch(input)) return right(input);
   return left(ValueFailure.weakPassword(failedValue: input));
 }
+
+Either<ValueFailure<String>, String> validateName(String input) {
+  if (input.isEmpty) return left(ValueFailure.empty(failedValue: input));
+  final doesntStartWithHyperphyn = RegExp(
+    r'^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$',
+    caseSensitive: false,
+  ).hasMatch(input);
+
+  if (doesntStartWithHyperphyn) {
+    return right(input);
+  }
+
+  return left(ValueFailure.invalidOrLongName(failedValue: input));
+}

@@ -25,7 +25,7 @@ mixin _$User {
   String? get userNameSensitiveCase => throw _privateConstructorUsedError;
   @JsonKey(toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
   DateTime? get registeredAt => throw _privateConstructorUsedError;
-  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +44,7 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(
           toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
       DateTime? registeredAt,
-      String? phoneNumber});
+      String? email});
 }
 
 /// @nodoc
@@ -64,7 +64,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = null,
     Object? userNameSensitiveCase = freezed,
     Object? registeredAt = freezed,
-    Object? phoneNumber = freezed,
+    Object? email = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -83,9 +83,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.registeredAt
           : registeredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      phoneNumber: freezed == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -104,7 +104,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(
           toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
       DateTime? registeredAt,
-      String? phoneNumber});
+      String? email});
 }
 
 /// @nodoc
@@ -120,7 +120,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? name = null,
     Object? userNameSensitiveCase = freezed,
     Object? registeredAt = freezed,
-    Object? phoneNumber = freezed,
+    Object? email = freezed,
   }) {
     return _then(_$_User(
       uid: null == uid
@@ -139,9 +139,9 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.registeredAt
           : registeredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      phoneNumber: freezed == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -157,7 +157,7 @@ class _$_User extends _User {
       @JsonKey(
           toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
       required this.registeredAt,
-      this.phoneNumber})
+      this.email})
       : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
@@ -172,11 +172,11 @@ class _$_User extends _User {
   @JsonKey(toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
   final DateTime? registeredAt;
   @override
-  final String? phoneNumber;
+  final String? email;
 
   @override
   String toString() {
-    return 'User(uid: $uid, name: $name, userNameSensitiveCase: $userNameSensitiveCase, registeredAt: $registeredAt, phoneNumber: $phoneNumber)';
+    return 'User(uid: $uid, name: $name, userNameSensitiveCase: $userNameSensitiveCase, registeredAt: $registeredAt, email: $email)';
   }
 
   @override
@@ -190,14 +190,13 @@ class _$_User extends _User {
                 other.userNameSensitiveCase == userNameSensitiveCase) &&
             (identical(other.registeredAt, registeredAt) ||
                 other.registeredAt == registeredAt) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber));
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, uid, name, userNameSensitiveCase, registeredAt, phoneNumber);
+      runtimeType, uid, name, userNameSensitiveCase, registeredAt, email);
 
   @JsonKey(ignore: true)
   @override
@@ -221,7 +220,7 @@ abstract class _User extends User {
       @JsonKey(
           toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
       required final DateTime? registeredAt,
-      final String? phoneNumber}) = _$_User;
+      final String? email}) = _$_User;
   _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -236,7 +235,7 @@ abstract class _User extends User {
   @JsonKey(toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
   DateTime? get registeredAt;
   @override
-  String? get phoneNumber;
+  String? get email;
   @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;

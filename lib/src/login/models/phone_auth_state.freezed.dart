@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PhoneAuthState {
+  Name get name => throw _privateConstructorUsedError;
   EmailAddress get email => throw _privateConstructorUsedError;
   Password get password => throw _privateConstructorUsedError;
 
@@ -30,7 +31,7 @@ abstract class $PhoneAuthStateCopyWith<$Res> {
           PhoneAuthState value, $Res Function(PhoneAuthState) then) =
       _$PhoneAuthStateCopyWithImpl<$Res, PhoneAuthState>;
   @useResult
-  $Res call({EmailAddress email, Password password});
+  $Res call({Name name, EmailAddress email, Password password});
 }
 
 /// @nodoc
@@ -46,10 +47,15 @@ class _$PhoneAuthStateCopyWithImpl<$Res, $Val extends PhoneAuthState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? name = null,
     Object? email = null,
     Object? password = null,
   }) {
     return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as Name,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -70,7 +76,7 @@ abstract class _$$_PhoneAuthStateCopyWith<$Res>
       __$$_PhoneAuthStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({EmailAddress email, Password password});
+  $Res call({Name name, EmailAddress email, Password password});
 }
 
 /// @nodoc
@@ -84,10 +90,15 @@ class __$$_PhoneAuthStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? name = null,
     Object? email = null,
     Object? password = null,
   }) {
     return _then(_$_PhoneAuthState(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as Name,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -103,8 +114,11 @@ class __$$_PhoneAuthStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PhoneAuthState implements _PhoneAuthState {
-  _$_PhoneAuthState({required this.email, required this.password});
+  _$_PhoneAuthState(
+      {required this.name, required this.email, required this.password});
 
+  @override
+  final Name name;
   @override
   final EmailAddress email;
   @override
@@ -112,7 +126,7 @@ class _$_PhoneAuthState implements _PhoneAuthState {
 
   @override
   String toString() {
-    return 'PhoneAuthState(email: $email, password: $password)';
+    return 'PhoneAuthState(name: $name, email: $email, password: $password)';
   }
 
   @override
@@ -120,13 +134,14 @@ class _$_PhoneAuthState implements _PhoneAuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PhoneAuthState &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, password);
+  int get hashCode => Object.hash(runtimeType, name, email, password);
 
   @JsonKey(ignore: true)
   @override
@@ -137,9 +152,12 @@ class _$_PhoneAuthState implements _PhoneAuthState {
 
 abstract class _PhoneAuthState implements PhoneAuthState {
   factory _PhoneAuthState(
-      {required final EmailAddress email,
+      {required final Name name,
+      required final EmailAddress email,
       required final Password password}) = _$_PhoneAuthState;
 
+  @override
+  Name get name;
   @override
   EmailAddress get email;
   @override
