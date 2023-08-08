@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/login/models/user.dart';
 import 'package:grapcoin/src/util/helpers.dart';
@@ -10,7 +11,7 @@ class UserService {
 
   final users = FirebaseFirestore.instance.collection('users');
 
-  // final realtimeDbUsers = FirebaseDatabase.instance.ref('users');
+  final realtimeDbUsers = FirebaseDatabase.instance.ref('users');
 
   User? currentUser;
 
@@ -67,46 +68,13 @@ class UserService {
     return user;
   }
 
-  // static Future<void> addUserNotificationData({String? freshToken}) async {
-  //   try {
-  //     final user = UserService.instance.currentUser;
-  //     if (user != null) {
-  //       //generating and setting up the token
-  //       final token =
-  //           freshToken ?? await FirebaseNotificationService.getToken();
-
-  //       if (token?.isNotEmpty ?? false) {
-  //         final docRef =
-  //             FirebaseFirestore.instance.collection('fcm_tokens').doc(token);
-  //         final doc = await docRef.get();
-
-  //         if (!doc.exists) {
-  //           // create the entry
-  //           await docRef.set({
-  //             'user_id': user.uid,
-  //             'name': user.userNameSensitiveCase ?? user.name,
-  //           });
-  //         }
-  //       } else {
-  //         debugPrint('Failed to generate the token');
-  //       }
-  //     }
-  //   } catch (e, stk) {
-  //     logger
-  //       ..d('An error occured while setting up the fcm token')
-  //       ..d(e)
-  //       ..d(stk);
-  //   }
-  // }
-
-  Future<User> add(
-      String userId, String displayName, String phoneNumber) async {
+  Future<User> add(String userId, String displayName, String email) async {
     final user = User(
       uid: userId,
       name: displayName.toLowerCase(),
       userNameSensitiveCase: displayName,
       registeredAt: DateTime.now(),
-      phoneNumber: phoneNumber,
+      email: email,
     );
     await users.doc(user.uid).set(user.toJson());
     return user;

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/services/authentication_service.dart';
+import 'package:grapcoin/src/login/services/user_service.dart';
 
 class FirebaseAuthenticationService extends AuthenticationService {
   final auth = FirebaseAuth.instance;
@@ -25,6 +26,10 @@ class FirebaseAuthenticationService extends AuthenticationService {
     try {
       authStreamSink.add(AuthenticationState.loading());
       await auth.signInWithEmailAndPassword(email: email, password: password);
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        await UserService.instance.logIn(currentUser);
+      }
       authStreamSink.add(AuthenticationState.connected());
     } on FirebaseAuthException catch (error) {
       authStreamSink
@@ -35,11 +40,17 @@ class FirebaseAuthenticationService extends AuthenticationService {
   }
 
   @override
-  Future<void> signUpWithEmail(String email, String password) async {
+  Future<void> signUpWithEmail(
+      String name, String email, String password) async {
     try {
       authStreamSink.add(AuthenticationState.loading());
       await auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        await UserService.instance.add(currentUser.uid, name, email);
+        await UserService.instance.logIn(currentUser);
+      }
       authStreamSink.add(AuthenticationState.connected());
     } on FirebaseAuthException catch (error) {
       authStreamSink
