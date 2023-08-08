@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/login/routes/phone_login_in.dart';
-import 'package:grapcoin/src/login/services/user_service.dart';
 
 class WelcomePage extends StatelessWidget {
   WelcomePage({super.key});
@@ -10,33 +10,36 @@ class WelcomePage extends StatelessWidget {
   final firebaseAuth = FirebaseAuth.instance;
 
   Future<void> loginAndRedirect(BuildContext context) async {
-    final user = await firebaseAuth.authStateChanges().first;
+    // final user = await firebaseAuth.authStateChanges().first;
+    final user = firebaseAuth.currentUser;
 
-    if (user != null) {
-      await UserService.instance.logIn(user);
-    }
-
-    // String redirect;
     // if (user != null) {
-    //   redirect = Routes.mainMenu;
-    //   if (testEnv) {}
-    // } else {
-    //   redirect = Routes.login;
+    //   await UserService.instance.logIn(user);
     // }
 
-    // If this route `isCurrent` then we actually loaded '/', redirect.
-    // Otherwise, this is just the result of first build but we're about
-    // to navigate to a different page -- don't mess with things.
-    // if (!Navigator.of(context).canPop()) {
-    //   await Navigator.of(context).pushNamed(redirect);
-    //   return;
-    // }
-    // await Navigator.of(context).pushReplacementNamed(redirect);
+    Widget? redirect;
+    if (user != null) {
+      redirect = const MainMenu();
+    } else {
+      redirect = null;
+    }
+    if (redirect != null) {
+      Future.microtask(
+        () async {
+          await Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => redirect!,
+            ),
+          );
+          return null;
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // loginAndRedirect(context);
+    loginAndRedirect(context);
 
     return Scaffold(
       body: Padding(

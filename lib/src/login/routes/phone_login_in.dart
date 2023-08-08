@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/constants/colors.dart';
+import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/helpers/providers.dart';
 import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/models/email_address.dart';
+import 'package:grapcoin/src/login/models/name.dart';
 import 'package:grapcoin/src/login/models/password.dart';
+import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class EmailAndPasswordLogin extends ConsumerStatefulWidget {
@@ -22,17 +25,22 @@ class EmailAndPasswordLogin extends ConsumerStatefulWidget {
 
 class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   GlobalKey<FormState> formKey = GlobalKey();
+  late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
+  late FocusNode nameFocusNode;
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
   bool shouldValidate = false;
   bool isLoading = false;
+  bool userExists = false;
 
   @override
   void initState() {
+    nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    nameFocusNode = FocusNode();
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
 
@@ -42,8 +50,20 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
           event.maybeMap(
             orElse: () {
               setState(() {
-                isLoading = true;
+                isLoading = false;
               });
+            },
+            connected: (_) {
+              setState(() {
+                isLoading = false;
+              });
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainMenu(),
+                ),
+                (route) => false,
+              );
             },
             failed: (value) {
               setState(() {
@@ -109,6 +129,12 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     // precacheImage(Image.asset(grapcoinLogo).image, context);
   }
 
+  @override
+  void dispose() {
+    ref.read(authServiceProvider).authState.listen((event) {}).cancel();
+    super.dispose();
+  }
+
   void signIn() async {
     final phoneAuthState = ref.watch(phoneAuthProvider);
     await ref.watch(authServiceProvider).signInWithEmail(
@@ -118,14 +144,26 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
   }
 
   void signUp() async {
+    setState(() {
+      shouldValidate = true;
+    });
     final phoneAuthState = ref.watch(phoneAuthProvider);
+
+    userExists = await UserService.instance
+        .existsWithUsername(phoneAuthState.name.getOrEmpty());
+    if (userExists) return;
+
     await ref.watch(authServiceProvider).signUpWithEmail(
+          phoneAuthState.name.getOrEmpty(),
           phoneAuthState.email.getOrEmpty(),
           phoneAuthState.password.getOrEmpty(),
         );
   }
 
   submit() {
+    emailFocusNode.unfocus();
+    nameFocusNode.unfocus();
+    passwordFocusNode.unfocus();
     return widget.isSignUp ? signUp() : signIn();
   }
 
@@ -152,7 +190,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     // );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56),
         child: AppBar(
@@ -172,108 +210,132 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
           child: Center(
             child: Column(
               children: [
-                Form(
-                  key: formKey,
-                  autovalidateMode: shouldValidate
-                      ? AutovalidateMode.onUserInteraction
-                      : null,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                welcomeTitle,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                welcomeMessage,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: blackLight,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        CustomFormField(
-                          controller: emailController,
-                          focusNode: emailFocusNode,
-                          hintText: 'Enter your email',
-                          labelText: 'Email',
-                          onChanged: ref
-                              .watch(phoneAuthProvider.notifier)
-                              .onEmailChange,
-                          validator: getEmailErrorStringOrNull,
-                        ),
-                        const SizedBox(height: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                Expanded(
+                  child: Form(
+                    key: formKey,
+                    autovalidateMode: shouldValidate
+                        ? AutovalidateMode.onUserInteraction
+                        : null,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text(
+                                    welcomeTitle,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    welcomeMessage,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: blackLight,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (widget.isSignUp) const SizedBox(height: 16),
+                            if (widget.isSignUp)
+                              CustomFormField(
+                                controller: nameController,
+                                focusNode: nameFocusNode,
+                                hintText: 'Enter your username',
+                                labelText: 'Username',
+                                onChanged: ref
+                                    .watch(phoneAuthProvider.notifier)
+                                    .onNameChange,
+                                validator: getNameErrorStringOrNull,
+                              ),
+                            const SizedBox(height: 16),
                             CustomFormField(
-                              isPassword: true,
-                              controller: passwordController,
-                              focusNode: passwordFocusNode,
-                              hintText: 'Enter password',
-                              labelText: 'Password',
-                              validator: getPasswordErrorStringOrNull,
+                              controller: emailController,
+                              focusNode: emailFocusNode,
+                              hintText: 'Enter your email',
+                              labelText: 'Email',
                               onChanged: ref
                                   .watch(phoneAuthProvider.notifier)
-                                  .onPasswordChange,
+                                  .onEmailChange,
+                              validator: getEmailErrorStringOrNull,
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                "Forgot password",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: purple,
+                            const SizedBox(height: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                CustomFormField(
+                                  isPassword: true,
+                                  controller: passwordController,
+                                  focusNode: passwordFocusNode,
+                                  hintText: 'Enter password',
+                                  labelText: 'Password',
+                                  validator: getPasswordErrorStringOrNull,
+                                  onChanged: ref
+                                      .watch(phoneAuthProvider.notifier)
+                                      .onPasswordChange,
                                 ),
-                              ),
-                            ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Forgot password",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      color: purple,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: MediaQuery.maybeOf(context)!.size.height / 8),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      child: ref
-                              .watch(phoneAuthProvider.notifier)
-                              .isValidPhoneAuthState()
-                          ? ChatButton.primary(
-                              text: buttonText,
-                              onPressed: submit,
-                              isLoading: isLoading,
-                            )
-                          : ChatButton.outlined(
-                              text: buttonText,
-                              isTransparent: true,
-                              onPressed: () {
-                                setState(() {
-                                  shouldValidate = true;
-                                });
-                                formKey.currentState!.validate();
-                              },
-                            ),
-                    ),
+                    Consumer(builder: (context, ref, _) {
+                      final phoneNumberNotifier = ref.watch(phoneAuthProvider);
+                      final isEmailValid = phoneNumberNotifier.email.isValid();
+                      final isPasswordValid =
+                          phoneNumberNotifier.password.isValid();
+                      final isNameValid = phoneNumberNotifier.name.isValid();
+
+                      final isValid = isEmailValid &&
+                          isPasswordValid &&
+                          (widget.isSignUp ? isNameValid : true);
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: isValid
+                            ? ChatButton.primary(
+                                text: buttonText,
+                                onPressed: submit,
+                                isLoading: isLoading,
+                              )
+                            : ChatButton.outlined(
+                                text: buttonText,
+                                isTransparent: true,
+                                onPressed: () {
+                                  setState(() {
+                                    shouldValidate = true;
+                                  });
+                                  formKey.currentState!.validate();
+                                },
+                              ),
+                      );
+                    }),
                     const SizedBox(height: 16),
                     AlternativeOnboarding(isSignUp: widget.isSignUp),
                   ],
@@ -295,6 +357,24 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         orElse: () => '',
       ),
       (r) => null,
+    );
+  }
+
+  String? getNameErrorStringOrNull(String? nameString) {
+    final nameValue = Name(nameString ?? '').value;
+    return nameValue.fold(
+      (l) => l.maybeMap(
+        invalidOrLongName: (_) =>
+            "Name should contain only characters and numbers",
+        empty: (_) => "username is required",
+        orElse: () => '',
+      ),
+      (r) {
+        if (userExists) {
+          return "Username already exists, please try updating name or login";
+        }
+        return null;
+      },
     );
   }
 
