@@ -6,7 +6,9 @@ import 'package:grapcoin/src/chat/utils/getters.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/personal_info_page.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/settings_page.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/widgets/settings_item.dart';
+import 'package:grapcoin/src/chat/views/chat_room_settings_page/widgets/signout_modal_content.dart';
 import 'package:grapcoin/src/constants/colors.dart';
+import 'package:grapcoin/src/core/widgets/bottom_sheet.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class GeneralSettingsPage extends ConsumerStatefulWidget {
@@ -110,7 +112,21 @@ class _ChatRoomSettingsPageState extends ConsumerState<GeneralSettingsPage> {
                               title: 'Privacy Policy',
                             ),
                             SettingsItem(
-                              onTap: onTap,
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  barrierColor:
+                                      const Color.fromARGB(80, 0, 0, 0),
+                                  backgroundColor:
+                                      const Color.fromARGB(0, 250, 250, 250),
+                                  builder: (context) {
+                                    return const BottomSheetModal(
+                                      height: 280,
+                                      child: SignoutModalContent(),
+                                    );
+                                  },
+                                );
+                              },
                               icon: Icons.logout_rounded,
                               title: 'Sign out',
                               isWarning: true,
@@ -119,39 +135,6 @@ class _ChatRoomSettingsPageState extends ConsumerState<GeneralSettingsPage> {
                         ),
                       ],
                     ),
-                    // const Expanded(
-                    //   child: SizedBox(),
-                    // ),
-                    // ChatButton.outlinedCaution(
-                    //   text: 'Logout',
-                    //   isLoading: isLoading,
-                    //   isTransparent: true,
-                    //   onPressed: () async {
-                    //     setState(() {
-                    //       isLoading = true;
-                    //     });
-
-                    //     ref.watch(authServiceProvider).logOut();
-                    //     ref.invalidate(chatRoomListStreamProvider);
-                    //     await UserService.instance.signOut(context: context);
-                    //     //add firebase token deletion here if it becomes
-                    //     //necessary, this prevents user from receiving
-                    //     //notifications when logged out
-                    //     setState(() {
-                    //       isLoading = false;
-                    //     });
-                    //     ref.watch(chatRoomPageIndex.notifier).state = 0;
-                    //     ref.watch(authServiceProvider).logOut();
-                    //     // ignore: use_build_context_synchronously
-                    //     await Navigator.pushAndRemoveUntil(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => WelcomePage(),
-                    //       ),
-                    //       (route) => false,
-                    //     );
-                    //   },
-                    // )
                   ],
                 ),
               )

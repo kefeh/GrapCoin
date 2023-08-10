@@ -38,6 +38,28 @@ class ChatButton extends StatelessWidget {
         child: child,
       );
 
+  factory ChatButton.primaryDanger({
+    Key? key,
+    required String text,
+    bool isLoading = false,
+    void Function()? onPressed,
+    EdgeInsets? padding,
+    Widget? leading,
+    Widget? child,
+  }) =>
+      ChatButton._(
+        text: text,
+        onPressed: onPressed,
+        color: red,
+        textColor: Colors.white,
+        outlined: false,
+        padding: padding,
+        isLoading: isLoading,
+        leading: leading,
+        key: key,
+        child: child,
+      );
+
   factory ChatButton.secondary({
     Key? key,
     required String text,
@@ -49,7 +71,7 @@ class ChatButton extends StatelessWidget {
       ChatButton._(
         text: text,
         onPressed: onPressed,
-        color: Colors.white,
+        color: white,
         textColor: purple,
         isLoading: isLoading,
         outlined: false,

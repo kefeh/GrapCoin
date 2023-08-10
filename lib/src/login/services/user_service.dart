@@ -26,6 +26,13 @@ class UserService {
     return (await users.doc(uid).get()).exists;
   }
 
+  ///Delete a user that exists based on the provided [uid]
+  Future<void> deleteCurrentUserAccount() async {
+    final user = auth.FirebaseAuth.instance.currentUser;
+    await users.doc(user!.uid).delete();
+    await auth.FirebaseAuth.instance.currentUser!.delete();
+  }
+
   ///checks whether [username] exists or not based on the returned count
   Future<bool> existsWithUsername(String username) async {
     //user name is now case sensitive so we need to check with lower case

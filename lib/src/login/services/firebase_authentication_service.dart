@@ -74,4 +74,9 @@ class FirebaseAuthenticationService extends AuthenticationService {
       AuthenticationState.failed(error: const AuthErrorUnknown());
     }
   }
+
+  @override
+  Future<void> deleteAccount() async {
+    await UserService.instance.deleteCurrentUserAccount();
+  }
 }

@@ -24,6 +24,7 @@ abstract class AuthenticationService {
   Future<void> updateUserData(String uID, String name, String email);
 
   Future<void> cleanUp();
+  Future<void> deleteAccount();
 
   void logOut() {
     _authState.add(AuthenticationState.disconnected());
