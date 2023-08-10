@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/login/routes/phone_login_in.dart';
+import 'package:grapcoin/src/login/services/user_service.dart';
 
 class WelcomePage extends StatelessWidget {
   WelcomePage({super.key});
@@ -13,22 +14,16 @@ class WelcomePage extends StatelessWidget {
     // final user = await firebaseAuth.authStateChanges().first;
     final user = firebaseAuth.currentUser;
 
-    // if (user != null) {
-    //   await UserService.instance.logIn(user);
-    // }
-
-    Widget? redirect;
     if (user != null) {
-      redirect = const MainMenu();
-    } else {
-      redirect = null;
+      await UserService.instance.logIn(user);
     }
-    if (redirect != null) {
+
+    if (user != null) {
       Future.microtask(
         () async {
           await Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => redirect!,
+              builder: (context) => const MainMenu(),
             ),
           );
           return null;
