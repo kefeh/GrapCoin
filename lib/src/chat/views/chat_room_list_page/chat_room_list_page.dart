@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grapcoin/src/chat/views/chat_room_list_page/widgets/chat_room_list_tile.dart';
 import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/routes/main_menu.dart';
-import 'package:grapcoin/src/chat/views/chat_room_list_page/widgets/chat_room_list_tile.dart';
+import 'package:grapcoin/src/core/widgets/chat_button.dart';
 
 class ChatRoomList extends ConsumerWidget {
   const ChatRoomList({
@@ -34,7 +35,14 @@ class ChatRoomList extends ConsumerWidget {
             },
             loading: () => const SliverFillRemaining(
               key: ValueKey('circular_progress_indicator'),
-              child: Center(child: CircularProgressIndicator()),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: CircularProgressIndicator(color: purpleLighter),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -43,25 +51,38 @@ class ChatRoomList extends ConsumerWidget {
   }
 }
 
-class ErrorChatRoomSliver extends StatelessWidget {
+class ErrorChatRoomSliver extends ConsumerWidget {
   const ErrorChatRoomSliver({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SliverFillRemaining(
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(36),
-            topRight: Radius.circular(36),
-          ),
-        ),
-        child: const Text(
-          'oh no no',
-          style: TextStyle(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.error_outline_rounded,
+            size: 80,
             color: red,
           ),
-        ),
+          const Text(
+            'Could not load chatrooms',
+            style: TextStyle(
+              color: red,
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: 80,
+            child: ChatButton.primary(
+              text: "Reload",
+              onPressed: () {
+                final _ = ref.refresh(chatRoomListStreamProvider);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
