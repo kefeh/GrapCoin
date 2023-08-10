@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const double maxWidth = 400.7;
 const double maxHeight = 766.1;
-const Color blackish = Color.fromRGBO(51, 51, 51, 1);
+const Color blackish = Color.fromARGB(255, 73, 73, 73);
 const Color black = Color(0xFF3E3E3E);
 
 const Color blackLight = Color.fromARGB(128, 51, 51, 51);

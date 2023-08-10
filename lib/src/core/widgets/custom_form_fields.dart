@@ -5,6 +5,7 @@ class CustomFormField extends StatefulWidget {
   const CustomFormField({
     super.key,
     this.isPassword = false,
+    this.readOnly = false,
     this.onChanged,
     this.validator,
     required this.controller,
@@ -18,6 +19,7 @@ class CustomFormField extends StatefulWidget {
   final String hintText;
   final String labelText;
   final bool isPassword;
+  final bool readOnly;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
 
@@ -41,7 +43,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
         ),
         const SizedBox(height: 4),
         TextFormField(
-          // controller: controller,
+          controller: widget.controller,
+          readOnly: widget.readOnly,
           obscureText: hide && widget.isPassword,
           validator: widget.validator,
           onChanged: widget.onChanged,
