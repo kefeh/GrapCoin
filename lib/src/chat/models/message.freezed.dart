@@ -25,6 +25,8 @@ mixin _$Message {
   @JsonKey(name: 'content_url')
   String get contentUrl => throw _privateConstructorUsedError;
   String get from => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sender_name')
+  String? get senderName => throw _privateConstructorUsedError;
   @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime)
   DateTime get at => throw _privateConstructorUsedError;
   @JsonKey(
@@ -50,6 +52,7 @@ abstract class $MessageCopyWith<$Res> {
       String content,
       @JsonKey(name: 'content_url') String contentUrl,
       String from,
+      @JsonKey(name: 'sender_name') String? senderName,
       @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime) DateTime at,
       @JsonKey(
           name: 'pinned_at',
@@ -77,6 +80,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? content = null,
     Object? contentUrl = null,
     Object? from = null,
+    Object? senderName = freezed,
     Object? at = null,
     Object? pinnedAt = freezed,
     Object? pinned = null,
@@ -99,6 +103,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as String,
+      senderName: freezed == senderName
+          ? _value.senderName
+          : senderName // ignore: cast_nullable_to_non_nullable
+              as String?,
       at: null == at
           ? _value.at
           : at // ignore: cast_nullable_to_non_nullable
@@ -131,6 +139,7 @@ abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       String content,
       @JsonKey(name: 'content_url') String contentUrl,
       String from,
+      @JsonKey(name: 'sender_name') String? senderName,
       @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime) DateTime at,
       @JsonKey(
           name: 'pinned_at',
@@ -155,6 +164,7 @@ class __$$_MessageCopyWithImpl<$Res>
     Object? content = null,
     Object? contentUrl = null,
     Object? from = null,
+    Object? senderName = freezed,
     Object? at = null,
     Object? pinnedAt = freezed,
     Object? pinned = null,
@@ -177,6 +187,10 @@ class __$$_MessageCopyWithImpl<$Res>
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as String,
+      senderName: freezed == senderName
+          ? _value.senderName
+          : senderName // ignore: cast_nullable_to_non_nullable
+              as String?,
       at: null == at
           ? _value.at
           : at // ignore: cast_nullable_to_non_nullable
@@ -205,6 +219,7 @@ class _$_Message extends _Message {
       required this.content,
       @JsonKey(name: 'content_url') this.contentUrl = '',
       required this.from,
+      @JsonKey(name: 'sender_name') required this.senderName,
       @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime)
       required this.at,
       @JsonKey(
@@ -230,6 +245,9 @@ class _$_Message extends _Message {
   @override
   final String from;
   @override
+  @JsonKey(name: 'sender_name')
+  final String? senderName;
+  @override
   @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime)
   final DateTime at;
   @override
@@ -246,7 +264,7 @@ class _$_Message extends _Message {
 
   @override
   String toString() {
-    return 'Message(key: $key, content: $content, contentUrl: $contentUrl, from: $from, at: $at, pinnedAt: $pinnedAt, pinned: $pinned, type: $type)';
+    return 'Message(key: $key, content: $content, contentUrl: $contentUrl, from: $from, senderName: $senderName, at: $at, pinnedAt: $pinnedAt, pinned: $pinned, type: $type)';
   }
 
   @override
@@ -259,6 +277,8 @@ class _$_Message extends _Message {
             (identical(other.contentUrl, contentUrl) ||
                 other.contentUrl == contentUrl) &&
             (identical(other.from, from) || other.from == from) &&
+            (identical(other.senderName, senderName) ||
+                other.senderName == senderName) &&
             (identical(other.at, at) || other.at == at) &&
             (identical(other.pinnedAt, pinnedAt) ||
                 other.pinnedAt == pinnedAt) &&
@@ -268,8 +288,8 @@ class _$_Message extends _Message {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, key, content, contentUrl, from, at, pinnedAt, pinned, type);
+  int get hashCode => Object.hash(runtimeType, key, content, contentUrl, from,
+      senderName, at, pinnedAt, pinned, type);
 
   @JsonKey(ignore: true)
   @override
@@ -291,6 +311,7 @@ abstract class _Message extends Message {
       required final String content,
       @JsonKey(name: 'content_url') final String contentUrl,
       required final String from,
+      @JsonKey(name: 'sender_name') required final String? senderName,
       @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime)
       required final DateTime at,
       @JsonKey(
@@ -313,6 +334,9 @@ abstract class _Message extends Message {
   String get contentUrl;
   @override
   String get from;
+  @override
+  @JsonKey(name: 'sender_name')
+  String? get senderName;
   @override
   @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime)
   DateTime get at;

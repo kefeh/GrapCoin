@@ -13,7 +13,7 @@ class ChatButton extends StatelessWidget {
     EdgeInsets? padding,
     this.child,
     this.leading,
-  })  : padding = padding ?? const EdgeInsets.symmetric(vertical: 15),
+  })  : padding = padding ?? const EdgeInsets.symmetric(vertical: 10),
         super(key: key);
 
   factory ChatButton.primary({

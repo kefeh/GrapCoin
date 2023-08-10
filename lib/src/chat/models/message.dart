@@ -14,6 +14,7 @@ class Message with _$Message {
     required String content,
     @JsonKey(name: 'content_url') @Default('') String contentUrl,
     required String from,
+    @JsonKey(name: 'sender_name') required String? senderName,
     @JsonKey(fromJson: fromJsonDateTime, toJson: toJsonDateTime)
     required DateTime at,
     @JsonKey(

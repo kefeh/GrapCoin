@@ -95,7 +95,9 @@ Message getSignedInUserMessage(
   MessageEnum type,
 ) {
   final user = firebase_auth.FirebaseAuth.instance.currentUser;
+  final userService = UserService.instance.currentUser;
   final userUID = user!.uid;
+  final userName = userService!.nameToDisplay;
   final message = Message(
     key: '',
     content: content,
@@ -104,6 +106,7 @@ Message getSignedInUserMessage(
     pinned: false,
     type: type,
     contentUrl: contentUrl,
+    senderName: userName,
   );
 
   return message;

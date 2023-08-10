@@ -131,6 +131,7 @@ class _ChatContentState extends ConsumerState<ChatContent> {
                               widget: widget,
                               user: user,
                               nameColor: nameColor,
+                              senderName: widget.message.senderName,
                             ),
 
                           if (widget.message.type == MessageEnum.image)
@@ -314,11 +315,13 @@ class ChatContentHeader extends StatelessWidget {
     required this.widget,
     required this.user,
     required this.nameColor,
+    required this.senderName,
   });
 
   final ChatContent widget;
   final AsyncValue<User> user;
   final Color nameColor;
+  final String? senderName;
 
   @override
   Widget build(BuildContext context) {
@@ -333,11 +336,12 @@ class ChatContentHeader extends StatelessWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Text(
-                          user.map(
-                            data: (data) => data.value.nameToDisplay,
-                            error: (_) => 'name get error',
-                            loading: (_) => 'loading',
-                          ),
+                          senderName ??
+                              user.map(
+                                data: (data) => data.value.nameToDisplay,
+                                error: (_) => 'name get error',
+                                loading: (_) => 'loading',
+                              ),
                           style: TextStyle(
                             color: nameColor,
                             fontSize: 12,

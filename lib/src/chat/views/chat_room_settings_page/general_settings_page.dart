@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grapcoin/src/chat/utils/getters.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/personal_info_page.dart';
+import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/settings_page.dart';
+import 'package:grapcoin/src/chat/views/chat_room_settings_page/widgets/settings_item.dart';
 import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
@@ -90,7 +92,14 @@ class _ChatRoomSettingsPageState extends ConsumerState<GeneralSettingsPage> {
                               title: title,
                             ),
                             SettingsItem(
-                              onTap: onTap,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SettingsPage(),
+                                  ),
+                                );
+                              },
                               icon:
                                   CupertinoIcons.person_crop_circle_badge_xmark,
                               title: 'Settings',
@@ -102,7 +111,7 @@ class _ChatRoomSettingsPageState extends ConsumerState<GeneralSettingsPage> {
                             ),
                             SettingsItem(
                               onTap: onTap,
-                              icon: Icons.exit_to_app_rounded,
+                              icon: Icons.logout_rounded,
                               title: 'Sign out',
                               isWarning: true,
                             ),
@@ -149,56 +158,6 @@ class _ChatRoomSettingsPageState extends ConsumerState<GeneralSettingsPage> {
             : const Center(
                 child: Text('Signed Out'),
               ),
-      ),
-    );
-  }
-}
-
-class SettingsItem extends StatelessWidget {
-  const SettingsItem({
-    super.key,
-    this.isWarning = false,
-    required this.onTap,
-    required this.icon,
-    required this.title,
-  });
-
-  final Function()? onTap;
-  final IconData icon;
-  final String title;
-  final bool isWarning;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isWarning ? red : blackish;
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 24,
-              color: color,
-            ),
-            const SizedBox(width: 16),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: color,
-              ),
-            ),
-            const Expanded(child: SizedBox()),
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 24,
-              color: purple,
-            ),
-          ],
-        ),
       ),
     );
   }

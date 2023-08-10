@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grapcoin/src/chat/views/chat_room_settings_page/general_settings_page.dart';
+import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/helpers/providers.dart';
@@ -6,7 +9,7 @@ import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/models/email_address.dart';
 import 'package:grapcoin/src/login/models/name.dart';
 import 'package:grapcoin/src/login/models/password.dart';
-import 'package:grapcoin/src/login/models/user.dart';
+import 'package:grapcoin/src/login/models/user.dart' as model;
 import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -28,10 +31,11 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
   bool shouldValidate = false;
   bool isLoading = false;
   bool userExists = false;
+  model.User? user;
 
   @override
   void initState() {
-    final User? user = UserService.instance.currentUser;
+    user = UserService.instance.currentUser;
     nameController = TextEditingController(text: user?.nameToDisplay);
     emailController = TextEditingController(text: user?.email);
     nameFocusNode = FocusNode();
@@ -155,6 +159,7 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
   @override
   Widget build(BuildContext context) {
     const buttonText = 'Update';
+    final someUser = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -177,6 +182,33 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
           child: Center(
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: purple,
+                      backgroundImage: someUser?.photoURL == null
+                          ? null
+                          : NetworkImage(someUser!.photoURL ?? ''),
+                      child: someUser?.photoURL == null
+                          ? DisplayName(name: user?.nameToDisplay ?? '')
+                          : Image.network(
+                              someUser!.photoURL!,
+                              fit: BoxFit.fitWidth,
+                              errorBuilder: (
+                                context,
+                                error,
+                                stackTrace,
+                              ) =>
+                                  DisplayName(
+                                name: user?.nameToDisplay ?? '',
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: Form(
                     key: formKey,
@@ -220,34 +252,37 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Consumer(builder: (context, ref, _) {
-                      final phoneNumberNotifier = ref.watch(phoneAuthProvider);
-                      final isNameValid = phoneNumberNotifier.name.isValid();
-                      final notSameName =
-                          UserService.instance.currentUser?.nameToDisplay !=
-                              phoneNumberNotifier.name.getOrEmpty();
+                    Consumer(
+                      builder: (context, ref, _) {
+                        final phoneNumberNotifier =
+                            ref.watch(phoneAuthProvider);
+                        final isNameValid = phoneNumberNotifier.name.isValid();
+                        final notSameName =
+                            UserService.instance.currentUser?.nameToDisplay !=
+                                phoneNumberNotifier.name.getOrEmpty();
 
-                      final isValid = isNameValid && notSameName;
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: isValid
-                            ? ChatButton.primary(
-                                text: buttonText,
-                                onPressed: submit,
-                                isLoading: isLoading,
-                              )
-                            : ChatButton.outlined(
-                                text: buttonText,
-                                isTransparent: true,
-                                onPressed: () {
-                                  setState(() {
-                                    shouldValidate = true;
-                                  });
-                                  formKey.currentState!.validate();
-                                },
-                              ),
-                      );
-                    }),
+                        final isValid = isNameValid && notSameName;
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: isValid
+                              ? ChatButton.primary(
+                                  text: buttonText,
+                                  onPressed: submit,
+                                  isLoading: isLoading,
+                                )
+                              : ChatButton.outlined(
+                                  text: buttonText,
+                                  isTransparent: true,
+                                  onPressed: () {
+                                    setState(() {
+                                      shouldValidate = true;
+                                    });
+                                    formKey.currentState!.validate();
+                                  },
+                                ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
