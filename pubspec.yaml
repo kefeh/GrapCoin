@@ -29,6 +29,19 @@ dependencies:
   firebase_core: ^2.15.0
   dartz: ^0.10.1
   json_annotation: ^4.8.1
+  firebase_storage: ^11.2.5
+  file_picker: ^5.3.3
+  intl: ^0.18.1
+  scroll_to_index: ^3.0.1
+  scrollable_positioned_list: ^0.3.8
+  flutter_smart_dialog: ^4.9.4
+  cached_network_image: ^3.2.3
+  url_launcher: ^6.1.12
+  linkify: ^5.0.0
+  flutter_social_textfield: ^0.1.2
+  readmore: ^2.2.0
+  better_player: ^0.0.63
+  firebase_database: ^10.2.4
 
 dev_dependencies:
   flutter_test:
