@@ -40,6 +40,21 @@ class FirebaseAuthenticationService extends AuthenticationService {
   }
 
   @override
+  Future<void> updateUserData(String uID, String name, String email) async {
+    try {
+      authStreamSink.add(AuthenticationState.loading());
+      await UserService.instance.add(uID, name, email, isUpdate: true);
+
+      authStreamSink.add(AuthenticationState.connected());
+    } on FirebaseAuthException catch (error) {
+      authStreamSink
+          .add(AuthenticationState.failed(error: AuthError.from(error)));
+    } on Exception {
+      AuthenticationState.failed(error: const AuthErrorUnknown());
+    }
+  }
+
+  @override
   Future<void> signUpWithEmail(
       String name, String email, String password) async {
     try {

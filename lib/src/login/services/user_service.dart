@@ -68,15 +68,24 @@ class UserService {
     return user;
   }
 
-  Future<User> add(String userId, String displayName, String email) async {
+  Future<User> add(
+    String userId,
+    String displayName,
+    String email, {
+    bool isUpdate = false,
+  }) async {
     final user = User(
       uid: userId,
       name: displayName.toLowerCase(),
       userNameSensitiveCase: displayName,
-      registeredAt: DateTime.now(),
+      registeredAt: (isUpdate && currentUser != null)
+          ? currentUser!.registeredAt
+          : DateTime.now(),
       email: email,
     );
     await users.doc(user.uid).set(user.toJson());
+
+    await logIn(auth.FirebaseAuth.instance.currentUser!);
     return user;
   }
 
