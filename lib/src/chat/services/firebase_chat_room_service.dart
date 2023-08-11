@@ -158,33 +158,38 @@ class FirebaseChatRoomService {
   /// get the snapshot for all chatRooms possibly to use for listening for changes
   // FailureOrChatRoomStream getAllChatRoomStream() {
   Stream<List<ChatRoom>> getAllChatRoomStream(String userID) {
-    // final chatRooms = <ChatRoom>[];
+    if (userID.isNotEmpty) {
+      return getChatRoomCollection(db)
+          .where('members', arrayContains: userID)
+          .orderBy('recent_message_time', descending: true)
+          .snapshots()
+          .map(
+        (event) {
+          final chatRooms = <ChatRoom>[];
 
-    // for (int i = 1; i < 10; i++) {
-    //   final data = ChatRoom(
-    //     createdAt: DateTime.now(),
-    //     creatorUID: '',
-    //     key: '$i key',
-    //     name: '$i name',
-    //   );
-    //   chatRooms.add(data);
-    // }
-    // return Stream.value(chatRooms);
-    return getChatRoomCollection(db)
-        // .where('members', arrayContains: userID)
-        .orderBy('recent_message_time', descending: true)
-        .snapshots()
-        .map(
-      (event) {
-        final chatRooms = <ChatRoom>[];
+          for (final doc in event.docs) {
+            final data = ChatRoom.fromFirestore(doc, null);
+            chatRooms.add(data);
+          }
+          return chatRooms;
+        },
+      );
+    } else {
+      return getChatRoomCollection(db)
+          .orderBy('recent_message_time', descending: true)
+          .snapshots()
+          .map(
+        (event) {
+          final chatRooms = <ChatRoom>[];
 
-        for (final doc in event.docs) {
-          final data = ChatRoom.fromFirestore(doc, null);
-          chatRooms.add(data);
-        }
-        return chatRooms;
-      },
-    );
+          for (final doc in event.docs) {
+            final data = ChatRoom.fromFirestore(doc, null);
+            chatRooms.add(data);
+          }
+          return chatRooms;
+        },
+      );
+    }
   }
 
   /// returning snapshots for chatRooms for a specific user because we want to

@@ -20,7 +20,7 @@ class SettingsItem extends StatelessWidget {
     final color = isWarning ? red : blackish;
     return GestureDetector(
       onTap: onTap,
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
