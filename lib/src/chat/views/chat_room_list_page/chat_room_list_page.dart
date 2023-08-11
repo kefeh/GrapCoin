@@ -21,15 +21,41 @@ class ChatRoomList extends ConsumerWidget {
             child: SizedBox(height: 10),
           ),
           chatRooms.when(
-            data: (chatRooms) => SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => ChatRoomListTile(
-                  key: Key(chatRooms[index].key + chatRooms[index].name),
-                  chatRoom: chatRooms[index],
-                ),
-                childCount: chatRooms.length,
-              ),
-            ),
+            data: (chatRooms) {
+              if (chatRooms.isEmpty) {
+                return const SliverFillRemaining(
+                  key: ValueKey('Empty List'),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.message_rounded,
+                        size: 70,
+                        color: red,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: Text(
+                          "You have not joined any chat yet, click the groups icon on the bottom to join",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => ChatRoomListTile(
+                      key: Key(chatRooms[index].key + chatRooms[index].name),
+                      chatRoom: chatRooms[index],
+                    ),
+                    childCount: chatRooms.length,
+                  ),
+                );
+              }
+            },
             error: (error, stack) {
               return const ErrorChatRoomSliver();
             },
