@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grapcoin/src/chat/utils/add_chat_room_notifier.dart';
-import 'package:grapcoin/src/chat/widgets/add_chat_room_dialog.dart';
 import 'package:grapcoin/src/constants/colors.dart';
 
 class MainMenuTopBar extends ConsumerWidget {
@@ -13,17 +11,16 @@ class MainMenuTopBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(
       builder: (context, ref, child) {
-        return Padding(
-          padding:
-              const EdgeInsets.only(left: 20, top: 4, bottom: 4, right: 10),
+        return const Padding(
+          padding: EdgeInsets.only(left: 20, top: 4, bottom: 4, right: 10),
           child: Row(
             children: [
-              const Text(
+              Text(
                 'GrapCoin',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: purpleLight,
+                  color: purple,
                   letterSpacing: 1.2,
                 ),
               ),
@@ -31,40 +28,9 @@ class MainMenuTopBar extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const MainMenuButton(
+                    MainMenuButton(
                       key: ValueKey('search_bar'),
                       icon: Icons.search,
-                    ),
-                    MainMenuButton(
-                      key: const ValueKey('create-session-key'),
-                      icon: Icons.add_circle_outline,
-                      onTap: () {
-                        showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AddRoomDialog(
-                              hintText: 'Type group subject here ...',
-                              isLoading: ref.watch(
-                                addChatRoomProvider.select(
-                                  (value) => value.isLoading,
-                                ),
-                              ),
-                              onChanged: ref
-                                  .watch(
-                                    addChatRoomProvider.notifier,
-                                  )
-                                  .getName,
-                              onPressed: (_) {
-                                ref
-                                    .watch(
-                                      addChatRoomProvider.notifier,
-                                    )
-                                    .addChatRoom();
-                              },
-                            );
-                          },
-                        );
-                      },
                     ),
                   ],
                 ),

@@ -9,10 +9,14 @@ import 'package:grapcoin/src/constants/colors.dart';
 class ChatRoomListTile extends ConsumerWidget {
   const ChatRoomListTile({
     super.key,
+    this.dense = false,
+    this.popBeforeNavigate = false,
     required this.chatRoom,
   });
 
   final ChatRoom chatRoom;
+  final bool dense;
+  final bool popBeforeNavigate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +29,7 @@ class ChatRoomListTile extends ConsumerWidget {
       child: GestureDetector(
         onTap: () {
           // ref.watch(currentChatRoomProvider.notifier).state = chatRoom;
+          if (popBeforeNavigate) Navigator.pop(context);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => ChatRoomPage(
@@ -40,10 +45,16 @@ class ChatRoomListTile extends ConsumerWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(
+              horizontal: dense ? 0 : 16,
+              vertical: dense ? 8 : 12,
+            ),
             child: Row(
               children: [
-                ChatRoomCircleAvatar(chatRoomName: chatRoom.name),
+                ChatRoomCircleAvatar(
+                  chatRoomName: chatRoom.name,
+                  radius: dense ? 15 : 20,
+                ),
                 const SizedBox(
                   width: 12,
                 ),
@@ -69,40 +80,47 @@ class ChatRoomListTile extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          Text(
-                            recentMessageTime,
-                            style: const TextStyle(
-                              color: Color.fromRGBO(136, 136, 136, 1),
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                          dense
+                              ? const Icon(
+                                  Icons.add_circle_outline_rounded,
+                                  color: purpleLight,
+                                  size: 18,
+                                )
+                              : Text(
+                                  recentMessageTime,
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(136, 136, 136, 1),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
                         ],
                       ),
-                      SizedBox(
-                        height: 28,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                Characters(chatRoomRecentMessage).toString(),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: const TextStyle(
-                                  height: 1.5,
-                                  color: blackLight,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
+                      if (!dense)
+                        SizedBox(
+                          height: 28,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  Characters(chatRoomRecentMessage).toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    height: 1.5,
+                                    color: blackLight,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                          ],
+                              const SizedBox(
+                                width: 40,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
