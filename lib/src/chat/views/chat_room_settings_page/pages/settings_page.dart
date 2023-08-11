@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/delete_account_page.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/widgets/settings_item.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -34,7 +35,14 @@ class SettingsPage extends StatelessWidget {
                 title: 'Reset Password',
               ),
               SettingsItem(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DeleteAccountPage(),
+                    ),
+                  );
+                },
                 icon: Icons.delete_forever,
                 title: 'Delete account',
                 isWarning: true,

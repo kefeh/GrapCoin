@@ -31,6 +31,7 @@ class UserService {
     final user = auth.FirebaseAuth.instance.currentUser;
     await users.doc(user!.uid).delete();
     await auth.FirebaseAuth.instance.currentUser!.delete();
+    currentUser = null;
   }
 
   ///checks whether [username] exists or not based on the returned count
