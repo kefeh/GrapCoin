@@ -65,6 +65,20 @@ class FirebaseMessageService {
     }
   }
 
+  FailureOrUnit deleteMessage(
+    String chatRoomID,
+    Message message,
+  ) async {
+    final docRef = getMessageCollection(db, chatRoomID).doc(message.key);
+    try {
+      await docRef.delete();
+
+      return right(unit);
+    } catch (error) {
+      return left(FirebaseFailure.add(error.toString()));
+    }
+  }
+
   /// gets the snapshot for all messages for listening for changes
   Either<FirebaseFailure, QuerySnapShotStream> getAllSnapshots(
     String chatRoomUID,

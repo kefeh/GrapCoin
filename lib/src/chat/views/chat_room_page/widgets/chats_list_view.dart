@@ -14,10 +14,12 @@ class ChatsListView extends ConsumerStatefulWidget {
     this.showChatItemOverlay = true,
     this.currentMessageID = '',
     required this.messageStream,
+    required this.chatroomID,
   });
   final AsyncValue<List<Message>> messageStream;
   final bool showChatItemOverlay;
   final String currentMessageID;
+  final String chatroomID;
 
   @override
   ConsumerState<ChatsListView> createState() => _ChatsListViewState();
@@ -105,6 +107,7 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
                         prevMessageFrom: prevMessageFrom,
                         showChatItemOverlay: widget.showChatItemOverlay,
                         highlight: shouldHighlight,
+                        chatroomID: widget.chatroomID,
                       ),
                     ),
                   ],

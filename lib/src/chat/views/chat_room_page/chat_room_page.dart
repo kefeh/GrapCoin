@@ -9,6 +9,7 @@ import 'package:grapcoin/src/chat/views/chat_room_page/widgets/chat_app_bar/chat
 import 'package:grapcoin/src/chat/views/chat_room_page/widgets/chat_bottom_bar.dart';
 import 'package:grapcoin/src/chat/views/chat_room_page/widgets/chats_list_view.dart';
 import 'package:grapcoin/src/constants/colors.dart';
+import 'package:grapcoin/src/core/helpers/helpers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final messagesStreamProvider = StreamProvider.family(
@@ -95,7 +96,7 @@ class ChatRoomPage extends HookConsumerWidget {
             child: Column(
               children: [
                 Expanded(
-                  // key: chatRoomListKey,
+                  key: chatRoomListKey,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return Stack(
@@ -109,6 +110,7 @@ class ChatRoomPage extends HookConsumerWidget {
                             child: ChatsListView(
                               messageStream: messageStream,
                               currentMessageID: messageID,
+                              chatroomID: chatroomID,
                             ),
                           ),
                           Positioned(

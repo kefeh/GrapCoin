@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/chat/models/focused_menu_item.dart';
+import 'package:grapcoin/src/chat/views/chat_room_page/utils/helpers.dart';
 import 'package:grapcoin/src/constants/colors.dart';
+import 'package:grapcoin/src/core/helpers/helpers.dart';
 
 class FocusedMenuHolder extends StatefulWidget {
   const FocusedMenuHolder({
@@ -10,7 +12,6 @@ class FocusedMenuHolder extends StatefulWidget {
     required this.onPressed,
     required this.menuItems,
     required this.mine,
-    required this.parentKey,
     this.showOverlay = true,
     this.duration,
     this.menuBoxDecoration,
@@ -37,21 +38,35 @@ class FocusedMenuHolder extends StatefulWidget {
   final double? bottomOffsetHeight;
   final double? menuOffset;
   final bool showOverlay;
-  final GlobalKey parentKey;
 
   /// Open with tap insted of long press.
   final bool openWithTap;
 
   @override
-  FocusedMenuHolderState createState() => FocusedMenuHolderState();
+  _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
 }
 
-class FocusedMenuHolderState extends State<FocusedMenuHolder> {
+class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = const Offset(0, 0);
 
   late Size parentSize;
   Size? childSize;
+
+  getOffset() {
+    // final parentSize = MediaQuery.of(context).size;
+    // print('parentSize: ${parentSize.height}');
+    final renderBox =
+        containerKey.currentContext!.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+    // final offset = renderBox.localToGlobal(Offset.zero);
+    parentSize = chatRoomListKey.currentContext!.size!;
+    setState(() {
+      // childOffset = Offset(offset.dx, offset.dy - 70);
+      childOffset = getPositionTop(chatRoomListKey, containerKey);
+      childSize = size;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +90,7 @@ class FocusedMenuHolderState extends State<FocusedMenuHolder> {
   }
 
   Future openMenu(BuildContext context) async {
+    getOffset();
     await Navigator.push(
       context,
       PageRouteBuilder(
@@ -152,9 +168,6 @@ class FocusedMenuDetails extends StatelessWidget {
 
     final maxMenuWidth = menuWidth ?? (size.width * 0.70);
     final menuHeight = listHeight < maxMenuHeight ? listHeight : maxMenuHeight;
-    // final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
-    //     ? childOffset.dx
-    //     : (childOffset.dx - maxMenuWidth + childSize!.width);
     final topOffset = (childOffset.dy + menuHeight + childSize!.height) <
             size.height - bottomOffsetHeight!
         ? childOffset.dy + childSize!.height + menuOffset!

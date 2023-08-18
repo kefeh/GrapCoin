@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class ChatItem extends ConsumerStatefulWidget {
     required this.message,
     required this.prevMessageFrom,
     required this.parentHeight,
+    required this.chatroomID,
   });
 
   final Message message;
@@ -25,6 +27,7 @@ class ChatItem extends ConsumerStatefulWidget {
   final bool highlight;
   final String prevMessageFrom;
   final double parentHeight;
+  final String chatroomID;
 
   @override
   ConsumerState<ChatItem> createState() => _ChatItemState();
@@ -41,14 +44,10 @@ class _ChatItemState extends ConsumerState<ChatItem> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserID = FirebaseAuth.instance.currentUser?.uid ?? '';
     return FocusedMenuHolder(
       onPressed: () {},
       showOverlay: widget.showChatItemOverlay,
-      //TODO: handle parentKey
-      parentKey: GlobalKey(),
-      // parentKey: ref.watch(inSplitViewRouteProvider)
-      //     ? chatRoomListKey
-      //     : chatRoomMainMenuKey,
       mine: mine,
       menuWidth: 200,
       blurSize: 5,
@@ -79,31 +78,28 @@ class _ChatItemState extends ConsumerState<ChatItem> {
             Clipboard.setData(ClipboardData(text: widget.message.content));
           },
         ),
-        FocusedMenuItem(
-          title: Text(
-            widget.message.pinned ? 'Unpin' : 'Pin',
-            style: const TextStyle(
-              color: white,
-              fontSize: 17,
-              fontWeight: FontWeight.w400,
+        if (currentUserID == widget.message.from)
+          FocusedMenuItem(
+            title: const Text(
+              'Delete',
+              style: TextStyle(
+                color: white,
+                fontSize: 17,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-          backgroundColor: black,
-          trailingIcon: Icon(
-            widget.message.pinned
-                ? CupertinoIcons.pin_slash
-                : CupertinoIcons.pin,
-            color: white,
-          ),
-          onPressed: () async {
-            await ref
-                .watch(firebaseMessageServiceProvider)
-                .changeMessagePinStatus(
-                  ref.watch(currentChatRoomProvider)?.key ?? '',
-                  widget.message,
-                );
-          },
-        )
+            backgroundColor: black,
+            trailingIcon: const Icon(
+              CupertinoIcons.delete,
+              color: white,
+            ),
+            onPressed: () async {
+              await ref.watch(firebaseMessageServiceProvider).deleteMessage(
+                    widget.chatroomID,
+                    widget.message,
+                  );
+            },
+          )
       ],
       child: ChatContent(
         mine: mine,
