@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:grapcoin/src/chat/models/chat_room.dart';
@@ -28,10 +29,11 @@ class ChatRoomPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatRoomFuture = ref.watch(chatRoomProvider(chatRoomID));
+    ChatRoom? chatroomInfo;
 
     useEffect(() {
       //awaits for the widget tree to render
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
         //then test if messages have been loaded
         //TODO: figure out how unread messages are transmitted
 
@@ -45,25 +47,29 @@ class ChatRoomPage extends HookConsumerWidget {
         //         );
         //   }
         // }
+        final user = FirebaseAuth.instance.currentUser;
+        if (chatroomInfo == null) return;
+        bool isMember = chatroomInfo!.members.contains(user?.uid ?? '');
+        if (!isMember) {
+          await ref
+              .watch(firebaseChatRoomServiceProvider)
+              .addMember(chatRoomID, user?.uid ?? '');
+
+          ref.watch(chatRoomProvider(chatRoomID)).maybeWhen(
+            orElse: () {
+              print('Error adding you to the chat room');
+              // TODO: add a snack bar
+            },
+            data: (snapshot) {
+              final chatRoom = ChatRoom.fromFirestore(snapshot, null);
+              ref.watch(currentChatRoomProvider.notifier).state = chatRoom;
+            },
+          );
+        }
       });
       return null;
-    });
+    }, [chatroomInfo]);
 
-    // ref.listen(
-    //   singleChatRoomProvider(userID),
-    //   (previous, next) {
-    //     next.maybeWhen(
-    //       orElse: () {
-    //         ref.watch(currentChatRoomProvider.notifier).state = null;
-    //       },
-    //       loading: () {},
-    //       data: (snapshot) {
-    //         final chatRoom = ChatRoom.fromFirestore(snapshot, null);
-    //         ref.watch(currentChatRoomProvider.notifier).state = chatRoom;
-    //       },
-    //     );
-    //   },
-    // );
     var fromTop = ref.watch(fromBottom);
     if (fromTop > -scrollDelayPixels) {
       fromTop = 0.0;
@@ -73,6 +79,7 @@ class ChatRoomPage extends HookConsumerWidget {
     return chatRoomFuture.when(
       data: (snapshot) {
         final chatRoom = ChatRoom.fromFirestore(snapshot, null);
+        chatroomInfo = chatRoom;
         final chatroomID = chatRoom.key;
 
         final messageStream = ref.watch(messagesStreamProvider(chatroomID));
