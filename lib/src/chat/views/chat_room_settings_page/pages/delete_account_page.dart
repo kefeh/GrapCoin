@@ -101,11 +101,13 @@ class _DeleteAccountPageState extends ConsumerState<DeleteAccountPage> {
                     setState(() {
                       isLoading = false;
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Error deleting account. Try again.'),
-                      ),
-                    );
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error deleting account. Try again.'),
+                        ),
+                      );
+                    }
                     logger
                       ..e(e)
                       ..e(stk);

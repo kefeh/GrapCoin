@@ -58,7 +58,6 @@ class ChatRoomPage extends HookConsumerWidget {
 
           ref.watch(chatRoomProvider(chatRoomID)).maybeWhen(
             orElse: () {
-              print('Error adding you to the chat room');
               // TODO: add a snack bar
             },
             data: (snapshot) {

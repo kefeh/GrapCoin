@@ -11,7 +11,6 @@ class FirebaseAuthenticationService extends AuthenticationService {
 
   @override
   Future<void> signInWithGoogle() {
-    // TODO: implement signInWithGoogle
     throw UnimplementedError();
   }
 

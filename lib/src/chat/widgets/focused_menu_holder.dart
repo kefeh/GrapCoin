@@ -43,10 +43,10 @@ class FocusedMenuHolder extends StatefulWidget {
   final bool openWithTap;
 
   @override
-  _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
+  FocusedMenuHolderState createState() => FocusedMenuHolderState();
 }
 
-class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
+class FocusedMenuHolderState extends State<FocusedMenuHolder> {
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = const Offset(0, 0);
 

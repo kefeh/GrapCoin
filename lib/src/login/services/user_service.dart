@@ -102,12 +102,14 @@ class UserService {
       await auth.FirebaseAuth.instance.signOut();
       currentUser = null;
     } catch (e, stk) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        // Authentication.customSnackBar(
-        //   content: 'Error signing out. Try again.',
-        // ),
-        const SnackBar(content: Text('Error signing out. Try again.')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          // Authentication.customSnackBar(
+          //   content: 'Error signing out. Try again.',
+          // ),
+          const SnackBar(content: Text('Error signing out. Try again.')),
+        );
+      }
       logger
         ..e(e)
         ..e(stk);

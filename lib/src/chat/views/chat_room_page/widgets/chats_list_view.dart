@@ -58,7 +58,6 @@ class _ChatsListViewState extends ConsumerState<ChatsListView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }

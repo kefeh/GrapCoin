@@ -56,24 +56,10 @@ class FirebaseChatRoomService {
   /// removes  a chatroom given the chatroom id. We want to delete a chatroom
   /// when the initiator owns or created the chatRoom else remove yourself from
   ///  the group
-  FailureOrUnit remove(String chatRoomUID, String userUID) async {
-    final docRef = getChatRoomDocRef(db, chatRoomUID);
-    ChatRoom? chatRoom;
-    var fail = false;
+  FailureOrUnit remove(ChatRoom chatRoom, String userUID) async {
     try {
-      final listener = docRef.snapshots().listen((event) async {
-        chatRoom = ChatRoom.fromFirestore(event, null);
-        if (chatRoom == null) {
-          fail = true;
-        }
+      await _handleDelete(chatRoom, userUID);
 
-        await _handleDelete(chatRoom!, userUID);
-      });
-
-      await listener.cancel();
-      if (fail) {
-        return left(const FirebaseFailure.delete('Chatroom does not exist'));
-      }
       return right(unit);
     } catch (error) {
       final errorString = error.toString();

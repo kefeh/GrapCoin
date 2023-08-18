@@ -34,7 +34,7 @@ FontWeight? getUrlFontWeight(String link) {
   return null;
 }
 
-TextSpan TextChatContentRecognizer({
+TextSpan textChatContentRecognizer({
   required String text,
   required bool mine,
   required void Function(String) internalLinkOnTap,

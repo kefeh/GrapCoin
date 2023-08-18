@@ -17,7 +17,7 @@ class ChatSettingsAvatar extends StatelessWidget {
     return Hero(
       tag: chatID + chatName,
       child: SizedBox(
-        height: 150,
+        height: 130,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -28,14 +28,6 @@ class ChatSettingsAvatar extends StatelessWidget {
                 color: black,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Text(
-              'Participants',
-              style: TextStyle(
-                color: black,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
               ),
             ),
           ],
