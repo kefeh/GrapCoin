@@ -104,6 +104,15 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
                     ),
                   );
                   break;
+                case AuthErrorTooManyRequests():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Too many attempts at updating information, try again after 5minutes',
+                      ),
+                    ),
+                  );
+                  break;
               }
             },
             loading: (_) {

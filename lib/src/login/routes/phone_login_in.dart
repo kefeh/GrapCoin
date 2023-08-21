@@ -109,6 +109,15 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                     ),
                   );
                   break;
+                case AuthErrorTooManyRequests():
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Too many attempts at accessing the account, please try again after 5 minutes',
+                      ),
+                    ),
+                  );
+                  break;
               }
             },
             loading: (_) {

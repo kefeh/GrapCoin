@@ -74,6 +74,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             fillColor: purpleLighter,
             isDense: true,
             contentPadding: const EdgeInsets.fromLTRB(14, 16, 12, 16),
+            errorStyle: const TextStyle(color: red),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
@@ -81,6 +82,14 @@ class _CustomFormFieldState extends State<CustomFormField> {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: purple),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: red),
             ),
           ),
         ),

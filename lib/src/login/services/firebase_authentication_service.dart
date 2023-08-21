@@ -75,6 +75,20 @@ class FirebaseAuthenticationService extends AuthenticationService {
   }
 
   @override
+  Future<void> resetPassword(String currentPassword, String newPassword) async {
+    final user = FirebaseAuth.instance.currentUser;
+    await reauthenticate(user!, currentPassword);
+    await user.updatePassword(newPassword);
+  }
+
+  Future<UserCredential> reauthenticate(
+      User user, String currentPassword) async {
+    final credentials = EmailAuthProvider.credential(
+        email: user.email!, password: currentPassword);
+    return user.reauthenticateWithCredential(credentials);
+  }
+
+  @override
   Future<void> deleteAccount() async {
     await UserService.instance.deleteCurrentUserAccount();
   }
