@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/routes/main_menu.dart';
+import 'package:grapcoin/src/core/widgets/bottom_sheet.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
 import 'package:grapcoin/src/login/helpers/providers.dart';
@@ -11,6 +12,7 @@ import 'package:grapcoin/src/login/models/name.dart';
 import 'package:grapcoin/src/login/models/password.dart';
 import 'package:grapcoin/src/login/routes/verify_email_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
+import 'package:grapcoin/src/login/widgets/phone_reset_modal.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class EmailAndPasswordLogin extends ConsumerStatefulWidget {
@@ -185,9 +187,23 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
       isLoading = true;
     });
     if (phoneAuthState.email.isValid()) {
-      await ref.watch(authServiceProvider).resetPasswordFromEmail(
-            phoneAuthState.email.getOrEmpty(),
-          );
+      try {
+        await ref.watch(authServiceProvider).resetPasswordFromEmail(
+              phoneAuthState.email.getOrEmpty(),
+            );
+        // ignore: use_build_context_synchronously
+        showModalBottomSheet(
+          context: context,
+          barrierColor: const Color.fromARGB(80, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(0, 250, 250, 250),
+          builder: (context) {
+            return const BottomSheetModal(
+              height: 280,
+              child: PhoneResetModal(),
+            );
+          },
+        );
+      } catch (e) {}
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -326,17 +342,19 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                                       .watch(phoneAuthProvider.notifier)
                                       .onPasswordChange,
                                 ),
-                                TextButton(
-                                  onPressed: resetPasswordWithEmail,
-                                  child: const Text(
-                                    "Forgot password",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: purple,
-                                    ),
-                                  ),
-                                ),
+                                isLoading
+                                    ? const SizedBox.shrink()
+                                    : TextButton(
+                                        onPressed: resetPasswordWithEmail,
+                                        child: const Text(
+                                          "Forgot password",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            color: purple,
+                                          ),
+                                        ),
+                                      ),
                               ],
                             )
                           ],
