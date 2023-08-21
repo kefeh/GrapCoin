@@ -23,6 +23,7 @@ abstract class AuthenticationService {
   Future<void> signUpWithEmail(String name, String email, String password);
   Future<void> updateUserData(String uID, String name, String email);
   Future<void> resetPassword(String currentPassword, String newPassword);
+  Future<void> resetPasswordFromEmail(String email);
 
   Future<void> cleanUp();
   Future<void> deleteAccount();

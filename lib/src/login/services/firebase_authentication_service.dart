@@ -81,6 +81,11 @@ class FirebaseAuthenticationService extends AuthenticationService {
   }
 
   @override
+  Future<void> resetPasswordFromEmail(String email) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
+
+  @override
   Future<void> resetPassword(String currentPassword, String newPassword) async {
     final user = FirebaseAuth.instance.currentUser;
     await reauthenticate(user!, currentPassword);

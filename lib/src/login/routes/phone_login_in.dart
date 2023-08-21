@@ -179,6 +179,30 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         );
   }
 
+  void resetPasswordWithEmail() async {
+    final phoneAuthState = ref.watch(phoneAuthProvider);
+    setState(() {
+      isLoading = true;
+    });
+    if (phoneAuthState.email.isValid()) {
+      await ref.watch(authServiceProvider).resetPasswordFromEmail(
+            phoneAuthState.email.getOrEmpty(),
+          );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'You must enter your email to reset your password',
+          ),
+        ),
+      );
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   submit() {
     emailFocusNode.unfocus();
     nameFocusNode.unfocus();
@@ -303,7 +327,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                                       .onPasswordChange,
                                 ),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: resetPasswordWithEmail,
                                   child: const Text(
                                     "Forgot password",
                                     style: TextStyle(
