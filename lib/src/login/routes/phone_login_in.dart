@@ -203,7 +203,66 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
             );
           },
         );
-      } catch (e) {}
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          isLoading = false;
+        });
+        final error = AuthError.from(e);
+        switch (error) {
+          case AuthErrorUnknown():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('An unknown error occured, please try again'),
+              ),
+            );
+            break;
+          case AuthErrorProjectNotFound():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                    'This project does not seem to exist, please contact your administrator'),
+              ),
+            );
+            break;
+          case AuthErrorUserNotFound():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content:
+                    Text('You dont seem to have an account, please sign up'),
+              ),
+            );
+            break;
+          case AuthErrorEmailInUse():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                    'An account associated to this email already exist, please log in'),
+              ),
+            );
+            break;
+          case AuthErrorWrongCredentials():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('The current password is not correct, try again'),
+              ),
+            );
+            break;
+          case AuthErrorTooManyRequests():
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                    'Too many attempts at ressetting password, try again after 5 minutes'),
+              ),
+            );
+            break;
+        }
+      } on Exception {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Something unexpected happened'),
+          ),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
