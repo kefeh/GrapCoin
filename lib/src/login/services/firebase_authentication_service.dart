@@ -28,6 +28,9 @@ class FirebaseAuthenticationService extends AuthenticationService {
       final currentUser = auth.currentUser;
       if (currentUser != null) {
         await UserService.instance.logIn(currentUser);
+        if (!currentUser.emailVerified) {
+          currentUser.sendEmailVerification();
+        }
       }
       authStreamSink.add(AuthenticationState.connected());
     } on FirebaseAuthException catch (error) {
@@ -64,6 +67,9 @@ class FirebaseAuthenticationService extends AuthenticationService {
       if (currentUser != null) {
         await UserService.instance.add(currentUser.uid, name, email);
         await UserService.instance.logIn(currentUser);
+        if (!currentUser.emailVerified) {
+          currentUser.sendEmailVerification();
+        }
       }
       authStreamSink.add(AuthenticationState.connected());
     } on FirebaseAuthException catch (error) {

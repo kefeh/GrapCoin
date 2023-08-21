@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/login/routes/phone_login_in.dart';
+import 'package:grapcoin/src/login/routes/verify_email_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -17,8 +18,9 @@ class WelcomePage extends StatelessWidget {
     if (user != null) {
       await UserService.instance.logIn(user);
     }
+    if (user == null) return;
 
-    if (user != null) {
+    if (user.emailVerified) {
       Future.microtask(
         () async {
           await Navigator.of(context).pushReplacement(
@@ -29,6 +31,13 @@ class WelcomePage extends StatelessWidget {
           return null;
         },
       );
+    }
+    if (!user.emailVerified) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const VerifyEmailPage(),
+          ));
     }
   }
 

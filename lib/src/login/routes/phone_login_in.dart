@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/routes/main_menu.dart';
@@ -8,6 +9,7 @@ import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/models/email_address.dart';
 import 'package:grapcoin/src/login/models/name.dart';
 import 'package:grapcoin/src/login/models/password.dart';
+import 'package:grapcoin/src/login/routes/verify_email_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -53,17 +55,25 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                 isLoading = false;
               });
             },
-            connected: (_) {
+            connected: (_) async {
               setState(() {
                 isLoading = false;
               });
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MainMenu(),
-                ),
-                (route) => false,
-              );
+              final user = FirebaseAuth.instance.currentUser;
+              if (user == null) return;
+              if (!user.emailVerified) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const VerifyEmailPage(),
+                    ));
+              } else {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainMenu(),
+                    ));
+              }
             },
             failed: (value) {
               setState(() {
