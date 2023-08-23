@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:grapcoin/src/chat/models/chat_room.dart';
 import 'package:grapcoin/src/chat/services/firebase_message_service.dart';
 import 'package:grapcoin/src/chat/utils/helpers.dart';
@@ -17,7 +16,7 @@ final messagesStreamProvider = StreamProvider.family(
       ref.watch(firebaseMessageServiceProvider).getMessageStream(chatRoomID),
 );
 
-class ChatRoomPage extends HookConsumerWidget {
+class ChatRoomPage extends ConsumerStatefulWidget {
   const ChatRoomPage({
     super.key,
     this.messageID = '',
@@ -28,47 +27,40 @@ class ChatRoomPage extends HookConsumerWidget {
   final String messageID;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final chatRoomFuture = ref.watch(chatRoomProvider(chatRoomID));
-    ChatRoom? chatroomInfo;
+  ConsumerState<ChatRoomPage> createState() => _ChatRoomPageState();
+}
 
-    useEffect(() {
-      //awaits for the widget tree to render
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-        //then test if messages have been loaded
-        //TODO: figure out how unread messages are transmitted
+class _ChatRoomPageState extends ConsumerState<ChatRoomPage> {
+  ChatRoom? chatroomInfo;
+  @override
+  void initState() {
+    Future.microtask(() async {
+      final user = FirebaseAuth.instance.currentUser;
+      if (chatroomInfo == null) return;
+      bool isMember = chatroomInfo!.members.contains(user?.uid ?? '');
+      if (!isMember) {
+        await ref
+            .watch(firebaseChatRoomServiceProvider)
+            .addMember(widget.chatRoomID, user?.uid ?? '');
 
-        // if (messageStream.hasValue) {
-        //   //records the last message's time
-        //   final lastTime = messageStream.value?.last.at.millisecondsSinceEpoch;
-        //   if (lastTime != null) {
-        //     ref.read(unreadMessagesCountProvider.notifier).updateUserLastView(
-        //           chatRoomID,
-        //           lastTime,
-        //         );
-        //   }
-        // }
-        final user = FirebaseAuth.instance.currentUser;
-        if (chatroomInfo == null) return;
-        bool isMember = chatroomInfo!.members.contains(user?.uid ?? '');
-        if (!isMember) {
-          await ref
-              .watch(firebaseChatRoomServiceProvider)
-              .addMember(chatRoomID, user?.uid ?? '');
-
-          ref.watch(chatRoomProvider(chatRoomID)).maybeWhen(
-            orElse: () {
-              // TODO: add a snack bar
-            },
-            data: (snapshot) {
-              final chatRoom = ChatRoom.fromFirestore(snapshot, null);
-              ref.watch(currentChatRoomProvider.notifier).state = chatRoom;
-            },
-          );
-        }
-      });
+        ref.watch(chatRoomProvider(widget.chatRoomID)).maybeWhen(
+          orElse: () {
+            // TODO: add a snack bar
+          },
+          data: (snapshot) {
+            final chatRoom = ChatRoom.fromFirestore(snapshot, null);
+            ref.watch(currentChatRoomProvider.notifier).state = chatRoom;
+          },
+        );
+      }
       return null;
-    }, [chatroomInfo]);
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chatRoomFuture = ref.watch(chatRoomProvider(widget.chatRoomID));
 
     var fromTop = ref.watch(fromBottom);
     if (fromTop > -scrollDelayPixels) {
@@ -108,7 +100,7 @@ class ChatRoomPage extends HookConsumerWidget {
                             ),
                             child: ChatsListView(
                               messageStream: messageStream,
-                              currentMessageID: messageID,
+                              currentMessageID: widget.messageID,
                               chatroomID: chatroomID,
                             ),
                           ),
@@ -136,7 +128,7 @@ class ChatRoomPage extends HookConsumerWidget {
           // ),
         );
       },
-      error: (error, _) => ChatRoomError(chatroomID: chatRoomID),
+      error: (error, _) => ChatRoomError(chatroomID: widget.chatRoomID),
       loading: () => const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
