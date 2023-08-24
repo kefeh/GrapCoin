@@ -16,6 +16,7 @@ class User with _$User {
     @JsonKey(toJson: toJsonDateTimeNullable, fromJson: fromJsonDateTimeNullable)
     required DateTime? registeredAt,
     String? email,
+    String? pin,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

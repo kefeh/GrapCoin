@@ -12,6 +12,7 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       userNameSensitiveCase: json['userNameSensitiveCase'] as String?,
       registeredAt: fromJsonDateTimeNullable(json['registeredAt'] as int?),
       email: json['email'] as String?,
+      pin: json['pin'] as String?,
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'userNameSensitiveCase': instance.userNameSensitiveCase,
       'registeredAt': toJsonDateTimeNullable(instance.registeredAt),
       'email': instance.email,
+      'pin': instance.pin,
     };
