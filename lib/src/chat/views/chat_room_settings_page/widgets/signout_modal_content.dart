@@ -78,7 +78,7 @@ class _SignoutModalContentState extends ConsumerState<SignoutModalContent> {
                     await Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => WelcomePage(),
+                        builder: (context) => const WelcomePage(),
                       ),
                       (route) => false,
                     );

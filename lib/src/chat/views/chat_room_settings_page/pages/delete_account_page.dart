@@ -93,7 +93,7 @@ class _DeleteAccountPageState extends ConsumerState<DeleteAccountPage> {
                     await Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => WelcomePage(),
+                        builder: (context) => const WelcomePage(),
                       ),
                       ModalRoute.withName('/'),
                     );
