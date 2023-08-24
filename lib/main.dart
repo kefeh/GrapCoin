@@ -46,9 +46,13 @@ class MyHomePage extends StatelessWidget {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => WelcomePage(),
+          builder: (context) => const WelcomePage(),
         ),
       );
+      return;
+    }
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
       return;
     }
 
