@@ -1,50 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/login/routes/phone_login_in.dart';
-import 'package:grapcoin/src/login/routes/verify_email_page.dart';
-import 'package:grapcoin/src/login/services/user_service.dart';
-import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 
 class WelcomePage extends StatelessWidget {
-  WelcomePage({super.key});
-
-  final firebaseAuth = FirebaseAuth.instance;
-
-  Future<void> loginAndRedirect(BuildContext context) async {
-    // final user = await firebaseAuth.authStateChanges().first;
-    final user = firebaseAuth.currentUser;
-
-    if (user != null) {
-      await UserService.instance.logIn(user);
-    }
-    if (user == null) return;
-
-    if (user.emailVerified) {
-      Future.microtask(
-        () async {
-          await Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const PasscodePage(),
-            ),
-          );
-          return null;
-        },
-      );
-    }
-    if (!user.emailVerified) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const VerifyEmailPage(),
-          ));
-    }
-  }
+  const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    loginAndRedirect(context);
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
