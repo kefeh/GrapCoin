@@ -97,6 +97,24 @@ class UserService {
     return user;
   }
 
+  Future<User?> setPin(String pin) async {
+    if (currentUser != null) {
+      final user = currentUser!;
+      final newUser = User(
+          uid: user.uid,
+          name: user.nameToDisplay.toLowerCase(),
+          userNameSensitiveCase: user.userNameSensitiveCase,
+          registeredAt: user.registeredAt,
+          email: user.email,
+          pin: pin);
+      await users.doc(user.uid).set(newUser.toJson());
+      await logIn(auth.FirebaseAuth.instance.currentUser!);
+      return user;
+    } else {
+      return null;
+    }
+  }
+
   Future<void> signOut({required BuildContext context}) async {
     try {
       await auth.FirebaseAuth.instance.signOut();
