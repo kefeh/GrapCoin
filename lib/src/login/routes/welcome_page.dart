@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/login/routes/phone_login_in.dart';
 import 'package:grapcoin/src/login/routes/verify_email_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
+import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 
 class WelcomePage extends StatelessWidget {
   WelcomePage({super.key});
@@ -25,7 +25,7 @@ class WelcomePage extends StatelessWidget {
         () async {
           await Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const MainMenu(),
+              builder: (context) => const PasscodePage(),
             ),
           );
           return null;

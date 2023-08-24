@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grapcoin/src/constants/colors.dart';
-import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
+import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const MainMenu(),
+            builder: (context) => const PasscodePage(),
           ),
           (route) => false,
         );

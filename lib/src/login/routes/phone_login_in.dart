@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grapcoin/src/constants/colors.dart';
-import 'package:grapcoin/src/core/routes/main_menu.dart';
 import 'package:grapcoin/src/core/widgets/bottom_sheet.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/core/widgets/custom_form_fields.dart';
@@ -13,6 +12,7 @@ import 'package:grapcoin/src/login/models/password.dart';
 import 'package:grapcoin/src/login/routes/verify_email_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:grapcoin/src/login/widgets/phone_reset_modal.dart';
+import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class EmailAndPasswordLogin extends ConsumerStatefulWidget {
@@ -73,7 +73,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MainMenu(),
+                      builder: (context) => const PasscodePage(),
                     ));
               }
             },
