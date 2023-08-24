@@ -7,6 +7,7 @@ import 'package:grapcoin/src/chat/views/chat_room_list_page/widgets/main_menu_to
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/general_settings_page.dart';
 import 'package:grapcoin/src/chat/widgets/main_menu_bottom_app_bar.dart';
 import 'package:grapcoin/src/constants/colors.dart';
+import 'package:grapcoin/src/core/routes/app_lifecycle.dart';
 import 'package:grapcoin/src/core/widgets/bottom_sheet.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
@@ -62,46 +63,48 @@ class _ChatRoomListPageState extends ConsumerState<MainMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: whitish,
-      extendBody: true,
-      body: SafeArea(
-        child: Column(
-          children: [
-            if (index == 0)
-              MainMenuTopBar(
-                tabIndex: index,
+    return AppLifecyclePage(
+      child: Scaffold(
+        backgroundColor: whitish,
+        extendBody: true,
+        body: SafeArea(
+          child: Column(
+            children: [
+              if (index == 0)
+                MainMenuTopBar(
+                  tabIndex: index,
+                ),
+              Expanded(
+                child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  children: const [
+                    ChatRoomList(),
+                    SizedBox(),
+                    GeneralSettingsPage(),
+                  ],
+                ),
               ),
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                children: const [
-                  ChatRoomList(),
-                  SizedBox(),
-                  GeneralSettingsPage(),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: MainMenuBottonAppBar(
-        index: index,
-        setIndex: setIndex,
-        onTapFAB: () {
-          showModalBottomSheet(
-            context: context,
-            barrierColor: const Color.fromARGB(80, 0, 0, 0),
-            backgroundColor: const Color.fromARGB(0, 250, 250, 250),
-            builder: (context) {
-              return BottomSheetModal(
-                height: MediaQuery.maybeSizeOf(context)!.height / 2,
-                child: const ChatsModalContent(),
-              );
-            },
-          );
-        },
+        bottomNavigationBar: MainMenuBottonAppBar(
+          index: index,
+          setIndex: setIndex,
+          onTapFAB: () {
+            showModalBottomSheet(
+              context: context,
+              barrierColor: const Color.fromARGB(80, 0, 0, 0),
+              backgroundColor: const Color.fromARGB(0, 250, 250, 250),
+              builder: (context) {
+                return BottomSheetModal(
+                  height: MediaQuery.maybeSizeOf(context)!.height / 2,
+                  child: const ChatsModalContent(),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
