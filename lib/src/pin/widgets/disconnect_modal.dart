@@ -98,7 +98,7 @@ class _DisconnectModalState extends ConsumerState<DisconnectModal> {
                     await Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => WelcomePage(),
+                        builder: (context) => const WelcomePage(),
                       ),
                       (route) => false,
                     );
