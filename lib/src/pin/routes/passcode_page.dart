@@ -13,8 +13,10 @@ class PasscodePage extends ConsumerStatefulWidget {
   const PasscodePage({
     super.key,
     this.inApp = false,
+    this.isReset = false,
   });
   final bool inApp;
+  final bool isReset;
 
   @override
   ConsumerState<PasscodePage> createState() => _PasscodePageState();
@@ -44,7 +46,9 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
 
     if (isSet) {
       welcomeNoteTitle = "Hello, $userName";
-      welcomeNoteTop = "Sign in with your security pin";
+      welcomeNoteTop = widget.isReset
+          ? "Enter your current pin"
+          : "Sign in with your security pin";
     } else {
       welcomeNoteTitle = "Hello, $userName";
       welcomeNoteTop = "Enter a PIN to secure your account";
@@ -72,7 +76,17 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
         final user = UserService.instance.currentUser;
         if (user != null && user.pin == code) {
           if (widget.inApp) {
-            Navigator.of(context).pop();
+            if (widget.isReset) {
+              await UserService.instance.setPin('');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PasscodePage(inApp: true),
+                ),
+              );
+            } else {
+              Navigator.of(context).pop();
+            }
           } else {
             Navigator.pushReplacement(
               context,
@@ -111,12 +125,16 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
           ),
         );
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainMenu(),
-          ),
-        );
+        if (widget.inApp) {
+          Navigator.of(context).pop();
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainMenu(),
+            ),
+          );
+        }
       }
     }
   }
@@ -133,7 +151,11 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
   void handleWrongPin() {
     setCodeValueAndNotifyWidgets('');
     if (retries >= 3) {
-      showDisconnect(context, login: true);
+      if (widget.isReset) {
+        Navigator.pop(context);
+      } else {
+        showDisconnect(context, login: true);
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -156,37 +178,51 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Stack(
+                alignment: Alignment.topCenter,
                 children: [
-                  if (user != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      child: InkWell(
-                        customBorder: const CircleBorder(),
-                        child: CircleAvatar(
-                          radius: 60,
-                          backgroundColor: purple,
-                          child: DisplayName(name: user.nameToDisplay),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (user != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: purple,
+                              child: DisplayName(name: user.nameToDisplay),
+                            ),
+                          ),
+                        ),
+                      Text(
+                        welcomeNoteTitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontFamily: 'Muli',
+                          fontSize: (18),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  Text(
-                    welcomeNoteTitle,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontFamily: 'Muli',
-                      fontSize: (18),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: (4),
-                  ),
-                  Text(
-                    welcomeNoteTop,
-                    textAlign: TextAlign.center,
+                      const SizedBox(
+                        height: (4),
+                      ),
+                      Text(
+                        welcomeNoteTop,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -221,7 +257,7 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
                   );
                 },
               ),
-              isSet
+              isSet && !widget.isReset
                   ? GestureDetector(
                       onTap: () {
                         showDisconnect(context, login: true);

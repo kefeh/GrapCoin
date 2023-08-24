@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/delete_account_page.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/pages/password_reset_page.dart';
 import 'package:grapcoin/src/chat/views/chat_room_settings_page/widgets/settings_item.dart';
+import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({
@@ -41,6 +42,21 @@ class SettingsPage extends StatelessWidget {
                 },
                 icon: Icons.password_rounded,
                 title: 'Reset Password',
+              ),
+              SettingsItem(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PasscodePage(
+                        inApp: true,
+                        isReset: true,
+                      ),
+                    ),
+                  );
+                },
+                icon: Icons.phonelink_lock_sharp,
+                title: 'Change PIN',
               ),
               SettingsItem(
                 onTap: () {
