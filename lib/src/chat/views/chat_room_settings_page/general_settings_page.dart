@@ -160,6 +160,10 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        ListView(
+          scrollDirection: Axis.horizontal,
+          children: const [Text('Verified')],
+        ),
         const SizedBox(height: 48),
         InkWell(
           customBorder: const CircleBorder(),

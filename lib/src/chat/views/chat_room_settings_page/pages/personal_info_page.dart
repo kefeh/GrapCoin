@@ -229,15 +229,17 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            CustomFormField(
-                              controller: nameController,
-                              focusNode: nameFocusNode,
-                              hintText: 'Enter your username',
-                              labelText: 'Username',
-                              onChanged: ref
-                                  .watch(phoneAuthProvider.notifier)
-                                  .onNameChange,
-                              validator: getNameErrorStringOrNull,
+                            Expanded(
+                              child: CustomFormField(
+                                controller: nameController,
+                                focusNode: nameFocusNode,
+                                hintText: 'Enter your username',
+                                labelText: 'Username',
+                                onChanged: ref
+                                    .watch(phoneAuthProvider.notifier)
+                                    .onNameChange,
+                                validator: getNameErrorStringOrNull,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             CustomFormField(
