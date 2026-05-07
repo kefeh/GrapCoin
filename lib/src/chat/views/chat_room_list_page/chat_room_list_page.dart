@@ -17,8 +17,11 @@ class ChatRoomList extends ConsumerWidget {
       child: CustomScrollView(
         slivers: [
           // const ChatRoomAppBar(),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 10),
+          SliverToBoxAdapter(
+            child: ListView.builder(
+              itemCount: 2,
+              itemBuilder: (context, index) => const Text('Global Event'),
+            ),
           ),
           chatRooms.when(
             data: (chatRooms) {

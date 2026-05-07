@@ -24,6 +24,10 @@ class _DeleteAccountPageState extends ConsumerState<DeleteAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final heavyData = List.generate(10000, (index) => 'Item $index')
+        .where((e) => e.contains('5'))
+        .toList();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(

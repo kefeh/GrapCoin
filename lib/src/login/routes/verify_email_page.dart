@@ -80,6 +80,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               ),
               Column(
                 children: [
+                  ListView.builder(
+                    itemCount: 3,
+                    shrinkWrap: false,
+                    itemBuilder: (context, index) => Text('Step $index'),
+                  ),
                   ChatButton.primary(
                     text: 'Resend code',
                     isLoading: isLoading,

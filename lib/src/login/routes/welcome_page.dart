@@ -20,9 +20,15 @@ class WelcomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
               ),
-              const Text(
-                'Your Ultimate hub for seemless connections',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+              Row(
+                children: [
+                  const Icon(Icons.info_outline),
+                  const Text(
+                    'Your Ultimate hub for seemless connections and long distance communication across the globe without any boundaries',
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+                  ),
+                ],
               ),
               Column(
                 children: [
