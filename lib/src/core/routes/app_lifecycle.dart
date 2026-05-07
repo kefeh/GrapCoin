@@ -49,9 +49,10 @@ class _AppLifecyclePageState extends State<AppLifecyclePage> {
     }
   }
 
-  void _onDetached() => print('detached');
+  void _onDetached() => debugPrint('detached');
 
   void _onResumed() async {
+    if (!mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const PasscodePage(inApp: true),
@@ -59,11 +60,11 @@ class _AppLifecyclePageState extends State<AppLifecyclePage> {
     );
   }
 
-  void _onInactive() => print('inactive');
+  void _onInactive() => debugPrint('inactive');
 
-  void _onHidden() => print('hidden');
+  void _onHidden() => debugPrint('hidden');
 
-  void _onPaused() => print('paused');
+  void _onPaused() => debugPrint('paused');
 
   @override
   Widget build(BuildContext context) {

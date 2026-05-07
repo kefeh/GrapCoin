@@ -13,18 +13,13 @@ Future<dynamic> showDisconnect(BuildContext context, {bool login = false}) {
     barrierColor: const Color.fromARGB(80, 0, 0, 0),
     backgroundColor: const Color.fromARGB(0, 250, 250, 250),
     builder: (context) {
-      return const BottomSheetModal(
-        height: 280,
-        child: DisconnectModal(),
-      );
+      return const BottomSheetModal(height: 280, child: DisconnectModal());
     },
   );
 }
 
 class DisconnectModal extends ConsumerStatefulWidget {
-  const DisconnectModal({
-    super.key,
-  });
+  const DisconnectModal({super.key});
 
   @override
   ConsumerState<DisconnectModal> createState() => _DisconnectModalState();
@@ -63,7 +58,7 @@ class _DisconnectModalState extends ConsumerState<DisconnectModal> {
                   fontFamily: "Muli",
                   fontWeight: FontWeight.w200,
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -72,12 +67,13 @@ class _DisconnectModalState extends ConsumerState<DisconnectModal> {
           child: Row(
             children: [
               Expanded(
-                  child: ChatButton.outlined(
-                text: "Cancel",
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )),
+                child: ChatButton.outlined(
+                  text: "Cancel",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: ChatButton.primary(
@@ -90,24 +86,29 @@ class _DisconnectModalState extends ConsumerState<DisconnectModal> {
 
                     ref.watch(authServiceProvider).logOut();
                     await UserService.instance.setPin('');
-                    await UserService.instance.signOut(context: context);
+                    if (!mounted) return;
+                    if (context.mounted) {
+                      await UserService.instance.signOut(context: context);
+                    }
                     setState(() {
                       isLoading = false;
                     });
-                    // ignore: use_build_context_synchronously
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WelcomePage(),
-                      ),
-                      (route) => false,
-                    );
+                    if (!mounted) return;
+                    if (context.mounted) {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomePage(),
+                        ),
+                        (route) => false,
+                      );
+                    }
                   },
                 ),
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

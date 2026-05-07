@@ -23,7 +23,7 @@ class ProgressButton extends StatefulWidget {
   final double elevation;
 
   ProgressButton(
-      {Key? key,
+      {super.key,
       required this.stateWidgets,
       required this.stateColors,
       this.state = ButtonState.idle,
@@ -47,8 +47,7 @@ class ProgressButton extends StatefulWidget {
         assert(
           stateColors.keys.toSet().containsAll(ButtonState.values.toSet()),
           'Must be non-null widgetds provided in map of stateWidgets. Missing keys => ${ButtonState.values.toSet().difference(stateColors.keys.toSet())}',
-        ),
-        super(key: key);
+        );
 
   @override
   State<StatefulWidget> createState() {

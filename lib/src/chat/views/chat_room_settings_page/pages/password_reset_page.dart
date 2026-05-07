@@ -11,9 +11,7 @@ import 'package:grapcoin/src/login/services/user_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PasswordResetPage extends ConsumerStatefulWidget {
-  const PasswordResetPage({
-    super.key,
-  });
+  const PasswordResetPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -56,7 +54,7 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
     super.dispose();
   }
 
-  submit() async {
+  Future<void> submit() async {
     setState(() {
       isLoading = true;
     });
@@ -65,21 +63,23 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
     confirmPasswordFocusNode.unfocus();
     try {
       await ref.watch(passwordResetProvider.notifier).resetPassword();
-
-      await UserService.instance.signOut(context: context);
+      if (!mounted) return;
+      if (context.mounted) {
+        await UserService.instance.signOut(context: context);
+      }
 
       setState(() {
         isLoading = false;
       });
-      // ignore: use_build_context_synchronously
+      if (!mounted) return;
+
       await Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (context) => const WelcomePage(),
-        ),
+        MaterialPageRoute(builder: (context) => const WelcomePage()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
@@ -96,7 +96,8 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                  'This project does not seem to exist, please contact your administrator'),
+                'This project does not seem to exist, please contact your administrator',
+              ),
             ),
           );
           break;
@@ -111,7 +112,8 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                  'An account associated to this email already exist, please log in'),
+                'An account associated to this email already exist, please log in',
+              ),
             ),
           );
           break;
@@ -126,16 +128,16 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                  'Too many attempts at ressetting password, try again after 5 minutes'),
+                'Too many attempts at ressetting password, try again after 5 minutes',
+              ),
             ),
           );
           break;
       }
     } on Exception {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Something unexpected happened'),
-        ),
+        const SnackBar(content: Text('Something unexpected happened')),
       );
     }
   }
@@ -247,15 +249,18 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
                   children: [
                     Consumer(
                       builder: (context, ref, _) {
-                        final phoneNumberNotifier =
-                            ref.watch(passwordResetProvider);
-                        final isValidCurrentPassword =
-                            phoneNumberNotifier.currentPassword.isValid();
+                        final phoneNumberNotifier = ref.watch(
+                          passwordResetProvider,
+                        );
+                        final isValidCurrentPassword = phoneNumberNotifier
+                            .currentPassword
+                            .isValid();
                         final isNewPasswordValidAndConfirmed = ref
                             .watch(passwordResetProvider.notifier)
                             .confirmPassword();
 
-                        final isValid = isValidCurrentPassword &&
+                        final isValid =
+                            isValidCurrentPassword &&
                             isNewPasswordValidAndConfirmed;
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
@@ -290,8 +295,9 @@ class PasswordResetPageState extends ConsumerState<PasswordResetPage> {
 
   String? getConfirmPasswordErrorStringOrNull(String? passwordString) {
     final passwordValue = Password(passwordString ?? '').value;
-    final isConfirmed =
-        ref.watch(passwordResetProvider.notifier).confirmPassword();
+    final isConfirmed = ref
+        .watch(passwordResetProvider.notifier)
+        .confirmPassword();
     return passwordValue.fold(
       (l) => l.maybeMap(
         weakPassword: (_) =>

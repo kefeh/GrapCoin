@@ -41,17 +41,12 @@ class _ContentPreviewPageState extends ConsumerState<ContentPreviewPage> {
           backgroundColor: white,
         ),
         DecoratedBox(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-          ),
+          decoration: const BoxDecoration(shape: BoxShape.circle),
           child: IconButton(
             onPressed: () {
               uploadTask.cancel();
             },
-            icon: const Icon(
-              Icons.close,
-              color: white,
-            ),
+            icon: const Icon(Icons.close, color: white),
           ),
         ),
       ];
@@ -62,48 +57,48 @@ class _ContentPreviewPageState extends ConsumerState<ContentPreviewPage> {
 
   Future<void> successTaskHandle(TaskSnapshot taskSnapshot) async {
     final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-    final messageBody =
-        getSignedInUserMessage(caption, downloadUrl, widget.type);
-    await ref.watch(firebaseMessageServiceProvider).add(
-          messageBody,
-          ref.watch(currentChatRoomProvider)?.key ?? '',
-        );
+    final messageBody = getSignedInUserMessage(
+      caption,
+      downloadUrl,
+      widget.type,
+    );
+    await ref
+        .watch(firebaseMessageServiceProvider)
+        .add(messageBody, ref.watch(currentChatRoomProvider)?.key ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final uploadTask = ref.watch(uploadTaskProvider);
-    ref.listen(
-      uploadTaskProvider,
-      (previous, next) {
-        if (next == null) return;
-        next.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-          switch (taskSnapshot.state) {
-            case TaskState.running:
-              setState(() {
-                loadingProgress =
-                    taskSnapshot.bytesTransferred / taskSnapshot.totalBytes;
-              });
-              debugPrint('Upload is $loadingProgress% complete.');
-              break;
-            case TaskState.paused:
-              debugPrint('Upload is paused.');
-              break;
-            case TaskState.canceled:
-              debugPrint('Upload was canceled');
-              break;
-            case TaskState.error:
-              // Handle unsuccessful uploads
-              break;
-            case TaskState.success:
-              successTaskHandle(taskSnapshot);
-              Navigator.of(context).pop();
-              break;
-          }
-        });
-      },
-    );
+    ref.listen(uploadTaskProvider, (previous, next) {
+      if (next == null) return;
+      next.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            setState(() {
+              loadingProgress =
+                  taskSnapshot.bytesTransferred / taskSnapshot.totalBytes;
+            });
+            debugPrint('Upload is $loadingProgress% complete.');
+            break;
+          case TaskState.paused:
+            debugPrint('Upload is paused.');
+            break;
+          case TaskState.canceled:
+            debugPrint('Upload was canceled');
+            break;
+          case TaskState.error:
+            // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+            successTaskHandle(taskSnapshot);
+            if (!mounted) return;
+            if (context.mounted) Navigator.of(context).pop();
+            break;
+        }
+      });
+    });
     return Scaffold(
       backgroundColor: black,
       body: SafeArea(
@@ -114,9 +109,7 @@ class _ContentPreviewPageState extends ConsumerState<ContentPreviewPage> {
               child: Row(
                 children: [
                   DecoratedBox(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
                     child: IconButton(
                       onPressed: () {
                         if (uploadTask != null) {
@@ -124,10 +117,7 @@ class _ContentPreviewPageState extends ConsumerState<ContentPreviewPage> {
                         }
                         Navigator.of(context).pop();
                       },
-                      icon: const Icon(
-                        Icons.close,
-                        color: white,
-                      ),
+                      icon: const Icon(Icons.close, color: white),
                     ),
                   ),
                 ],
@@ -174,8 +164,9 @@ class _ContentPreviewPageState extends ConsumerState<ContentPreviewPage> {
                       hintText: 'Add a caption...',
                       preventEmptySubmit: false,
                       submit: (message) async {
-                        ref.watch(uploadTaskProvider.notifier).state =
-                            uploadeFileTask(
+                        ref
+                            .watch(uploadTaskProvider.notifier)
+                            .state = uploadeFileTask(
                           widget.file,
                           widget.chatroomID,
                           widget.type.name,

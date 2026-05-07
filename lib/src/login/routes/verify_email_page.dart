@@ -6,10 +6,10 @@ import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 
 class VerifyEmailPage extends StatefulWidget {
-  const VerifyEmailPage({Key? key}) : super(key: key);
+  const VerifyEmailPage({super.key});
 
   @override
-  _VerifyEmailPageState createState() => _VerifyEmailPageState();
+  State<VerifyEmailPage> createState() => _VerifyEmailPageState();
 }
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
@@ -25,11 +25,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       final user = FirebaseAuth.instance.currentUser;
       if (user?.emailVerified ?? false) {
         timer.cancel();
+        if (!mounted) return;
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (context) => const PasscodePage(),
-          ),
+          MaterialPageRoute(builder: (context) => const PasscodePage()),
           (route) => false,
         );
       }
@@ -65,10 +64,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               const Text(
                 'Verify your email address',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.normal,
-                ),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
               ),
               Text(
                 'An Email has been sent to your email address $userEmail, please check your email and click the link to confirm the email. If you have not received the email, click below to resend',
@@ -97,7 +93,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     },
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

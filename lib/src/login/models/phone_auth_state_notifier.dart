@@ -14,19 +14,19 @@ class PhoneAuthNotifier extends StateNotifier<PhoneAuthState> {
           ),
         );
 
-  onEmailChange(String emailString) {
+  void onEmailChange(String emailString) {
     state = state.copyWith(email: EmailAddress(emailString));
   }
 
-  onNameChange(String nameString) {
+  void onNameChange(String nameString) {
     state = state.copyWith(name: Name(nameString));
   }
 
-  onPasswordChange(String passwordString) {
+  void onPasswordChange(String passwordString) {
     state = state.copyWith(password: Password(passwordString));
   }
 
-  isValidPhoneAuthState() {
+  bool isValidPhoneAuthState() {
     return state.email.isValid() && state.password.isValid();
   }
 }

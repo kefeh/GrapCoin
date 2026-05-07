@@ -46,83 +46,6 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
           .read(phoneAuthProvider.notifier)
           .onNameChange(user?.nameToDisplay ?? '');
       ref.read(phoneAuthProvider.notifier).onEmailChange(user?.email ?? '');
-      ref.read(authServiceProvider).authState.listen(
-        (event) {
-          event.maybeMap(
-            orElse: () {
-              setState(() {
-                isLoading = false;
-              });
-            },
-            connected: (_) {
-              setState(() {
-                isLoading = false;
-              });
-              Navigator.pop(context);
-            },
-            failed: (value) {
-              setState(() {
-                isLoading = false;
-              });
-              switch (value.error) {
-                case AuthErrorUnknown():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                          Text('An unknown error occured, please try again'),
-                    ),
-                  );
-                  break;
-                case AuthErrorProjectNotFound():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'This project does not seem to exist, please contact your administrator'),
-                    ),
-                  );
-                  break;
-                case AuthErrorUserNotFound():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'You dont seem to have an account, please sign up'),
-                    ),
-                  );
-                  break;
-                case AuthErrorEmailInUse():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'An account associated to this email already exist, please log in'),
-                    ),
-                  );
-                  break;
-                case AuthErrorWrongCredentials():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('The password is not correct, try again'),
-                    ),
-                  );
-                  break;
-                case AuthErrorTooManyRequests():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Too many attempts at updating information, try again after 5minutes',
-                      ),
-                    ),
-                  );
-                  break;
-              }
-            },
-            loading: (_) {
-              setState(() {
-                isLoading = true;
-              });
-            },
-          );
-        },
-      );
     });
     super.initState();
   }
@@ -135,7 +58,6 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
 
   @override
   void dispose() {
-    ref.read(authServiceProvider).authState.listen((event) {}).cancel();
     ref.read(phoneAuthProvider.notifier).dispose();
     super.dispose();
   }
@@ -159,14 +81,97 @@ class _PhoneSignInState extends ConsumerState<PersonalInfoUpdatePage> {
         );
   }
 
-  submit() {
+  void submit() {
     emailFocusNode.unfocus();
     nameFocusNode.unfocus();
-    return update();
+    update();
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<AuthenticationState>>(
+      authStateProvider,
+      (previous, next) {
+        next.whenOrNull(
+          data: (event) {
+            event.maybeMap(
+              orElse: () {
+                setState(() {
+                  isLoading = false;
+                });
+              },
+              connected: (_) {
+                if (!mounted) return;
+                setState(() {
+                  isLoading = false;
+                });
+                Navigator.pop(context);
+              },
+              failed: (value) {
+                setState(() {
+                  isLoading = false;
+                });
+                switch (value.error) {
+                  case AuthErrorUnknown():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('An unknown error occured, please try again'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorProjectNotFound():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'This project does not seem to exist, please contact your administrator'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorUserNotFound():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'You dont seem to have an account, please sign up'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorEmailInUse():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'An account associated to this email already exist, please log in'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorWrongCredentials():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('The password is not correct, try again'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorTooManyRequests():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Too many attempts at updating information, try again after 5minutes',
+                        ),
+                      ),
+                    );
+                    break;
+                }
+              },
+              loading: (_) {
+                setState(() {
+                  isLoading = true;
+                });
+              },
+            );
+          },
+        );
+      },
+    );
     const buttonText = 'Update';
     final someUser = FirebaseAuth.instance.currentUser;
 

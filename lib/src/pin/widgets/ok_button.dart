@@ -15,7 +15,8 @@ class OkButton extends StatelessWidget {
         TextButton(
           onPressed: onTap,
           style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: const BorderSide(

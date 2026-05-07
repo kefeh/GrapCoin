@@ -3,7 +3,7 @@ import 'package:grapcoin/src/constants/colors.dart';
 
 class ChatButton extends StatelessWidget {
   const ChatButton._({
-    Key? key,
+    super.key,
     required this.outlined,
     required this.isLoading,
     required this.text,
@@ -13,8 +13,7 @@ class ChatButton extends StatelessWidget {
     EdgeInsets? padding,
     this.child,
     this.leading,
-  })  : padding = padding ?? const EdgeInsets.symmetric(vertical: 10),
-        super(key: key);
+  })  : padding = padding ?? const EdgeInsets.symmetric(vertical: 10);
 
   factory ChatButton.primary({
     Key? key,

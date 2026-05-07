@@ -65,7 +65,7 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
     super.dispose();
   }
 
-  onKeyTap(value) async {
+  Future<void> onKeyTap(dynamic value) async {
     if (code.length < 4) {
       String codeValue = code + value;
       setCodeValueAndNotifyWidgets(codeValue);
@@ -78,6 +78,7 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
           if (widget.inApp) {
             if (widget.isReset) {
               await UserService.instance.setPin('');
+              if (!mounted) return;
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -108,16 +109,17 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
     });
   }
 
-  onBackspacePressed() {
+  void onBackspacePressed() {
     if (code.isNotEmpty) {
       final String updatedCodeValue = code.substring(0, code.length - 1);
       setCodeValueAndNotifyWidgets(updatedCodeValue);
     }
   }
 
-  onOkayPressed() async {
+  Future<void> onOkayPressed() async {
     if (code.isNotEmpty && code.length == 4) {
       final user = await UserService.instance.setPin(code);
+      if (!mounted) return;
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -139,12 +141,12 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
     }
   }
 
-  showColor(index) {
+  Color showColor(int index) {
     final colorScheme = Theme.of(context).colorScheme;
     if (code.length >= (index + 1)) {
       return wrong ? Colors.red : colorScheme.secondary;
     }
-    return colorScheme.primary.withOpacity(0.1);
+    return colorScheme.primary.withValues(alpha: 0.1);
   }
 
   int retries = 0;
