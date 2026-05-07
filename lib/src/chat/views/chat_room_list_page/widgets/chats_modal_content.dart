@@ -10,7 +10,7 @@ import 'package:grapcoin/src/login/models/user.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class ChatsModalContent extends ConsumerStatefulWidget {
-  const ChatsModalContent({Key? key}) : super(key: key);
+  const ChatsModalContent({super.key});
 
   @override
   ConsumerState<ChatsModalContent> createState() => _ChatsModalContentState();

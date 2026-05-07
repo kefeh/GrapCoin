@@ -29,7 +29,7 @@ class AddChatRoomNotifier extends StateNotifier<AddChatRoomState> {
   final FirebaseChatRoomService _service;
 
   Future<void> getProfileImage() async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.pickFiles();
     if (result != null) {
       state = state.copyWith(profileImage: result.files.first);
     }

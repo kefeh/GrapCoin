@@ -41,8 +41,9 @@ class UserService {
                 .where('name', isEqualTo: username.toLowerCase())
                 .count()
                 .get())
-            .count >=
+            .count! >=
         1;
+
   }
 
   Future<User?> tryGet(String uid) async {

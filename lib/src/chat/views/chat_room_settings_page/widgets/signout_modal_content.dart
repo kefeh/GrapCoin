@@ -8,7 +8,7 @@ import 'package:grapcoin/src/login/routes/welcome_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class SignoutModalContent extends ConsumerStatefulWidget {
-  const SignoutModalContent({Key? key}) : super(key: key);
+  const SignoutModalContent({super.key});
 
   @override
   ConsumerState<SignoutModalContent> createState() =>

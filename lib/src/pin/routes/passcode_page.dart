@@ -144,7 +144,7 @@ class _PasscodePageState extends ConsumerState<PasscodePage> {
     if (code.length >= (index + 1)) {
       return wrong ? Colors.red : colorScheme.secondary;
     }
-    return colorScheme.primary.withOpacity(0.1);
+    return colorScheme.primary.withValues(alpha: 0.1);
   }
 
   int retries = 0;

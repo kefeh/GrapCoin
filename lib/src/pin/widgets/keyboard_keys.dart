@@ -47,7 +47,7 @@ class _KeyboardKeyState extends State<KeyboardKey> {
       child: widget.label is OkButton
           ? OkButton(onTap: widget.onConfirm)
           : InkWell(
-              splashColor: purple.withOpacity(0.2),
+              splashColor: purple.withValues(alpha: 0.2),
               onTap: () {
                 onTapChoice(widget.label);
               },

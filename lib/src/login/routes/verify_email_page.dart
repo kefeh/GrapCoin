@@ -6,7 +6,7 @@ import 'package:grapcoin/src/core/widgets/chat_button.dart';
 import 'package:grapcoin/src/pin/routes/passcode_page.dart';
 
 class VerifyEmailPage extends StatefulWidget {
-  const VerifyEmailPage({Key? key}) : super(key: key);
+  const VerifyEmailPage({super.key});
 
   @override
   _VerifyEmailPageState createState() => _VerifyEmailPageState();
