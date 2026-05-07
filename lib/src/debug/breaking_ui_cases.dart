@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// A collection of widgets intentionally designed with UI bugs for testing 
-/// static analysis tools like CodeRabbit.
-/// Each case is now separated into its own class to avoid one hard failure 
-/// preventing the exercise of subsequent cases.
 class BreakingUICases extends StatelessWidget {
   const BreakingUICases({super.key});
 
@@ -45,17 +41,12 @@ class CaseSection extends StatelessWidget {
       children: [
         Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         const SizedBox(height: 8),
-        // We wrap in a constrained box to attempt to isolate some issues,
-        // but many of these will still throw/overflow as intended.
         SizedBox(height: 100, child: child),
       ],
     );
   }
 }
 
-/// ISSUE 1: ListView inside Column without Expanded/SizedBox.
-/// Note: Inside BreakingUICases, this is now inside a SizedBox from CaseSection,
-/// but if used directly in a Column it would crash.
 class Case1VerticalUnbounded extends StatelessWidget {
   const Case1VerticalUnbounded({super.key});
   @override
@@ -71,7 +62,6 @@ class Case1VerticalUnbounded extends StatelessWidget {
   }
 }
 
-/// ISSUE 2: Long text inside Row will cause a horizontal overflow.
 class Case2HorizontalOverflow extends StatelessWidget {
   const Case2HorizontalOverflow({super.key});
   @override
@@ -87,7 +77,6 @@ class Case2HorizontalOverflow extends StatelessWidget {
   }
 }
 
-/// ISSUE 3: Expanded cannot be a child of SingleChildScrollView (indirectly via Column).
 class Case3InvalidExpanded extends StatelessWidget {
   const Case3InvalidExpanded({super.key});
   @override
@@ -104,7 +93,6 @@ class Case3InvalidExpanded extends StatelessWidget {
   }
 }
 
-/// ISSUE 4: Nested scrollables without shrinkWrap: true.
 class Case4NestedUnbounded extends StatelessWidget {
   const Case4NestedUnbounded({super.key});
   @override
@@ -120,7 +108,6 @@ class Case4NestedUnbounded extends StatelessWidget {
   }
 }
 
-/// ISSUE 5: ListView with horizontal scroll inside a Row without Expanded.
 class Case5HorizontalUnbounded extends StatelessWidget {
   const Case5HorizontalUnbounded({super.key});
   @override
@@ -136,7 +123,6 @@ class Case5HorizontalUnbounded extends StatelessWidget {
   }
 }
 
-/// ISSUE 6: Positioned widget outside of a Stack.
 class Case6MisplacedPositioned extends StatelessWidget {
   const Case6MisplacedPositioned({super.key});
   @override
@@ -148,7 +134,6 @@ class Case6MisplacedPositioned extends StatelessWidget {
   }
 }
 
-/// ISSUE 7: Inefficient build method performing heavy work.
 class Case7InefficientBuild extends StatefulWidget {
   const Case7InefficientBuild({super.key});
   @override
