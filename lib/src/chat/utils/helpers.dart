@@ -127,8 +127,8 @@ Future<PlatformFile?> getFileFromType(MessageEnum type) async {
   FilePickerResult? pickedFile;
   if (type == MessageEnum.image) {
     final pickedFiles = kIsWeb
-        ? await FilePicker.platform.pickFiles(type: FileType.image)
-        : await FilePicker.platform.pickFiles(
+        ? await FilePicker.pickFiles(type: FileType.image)
+        : await FilePicker.pickFiles(
             type: FileType.custom,
             allowedExtensions: ['jpeg', 'jpg', 'png'],
             withData: true,
@@ -136,7 +136,7 @@ Future<PlatformFile?> getFileFromType(MessageEnum type) async {
     pickedFile = pickedFiles;
   }
   if (type == MessageEnum.video) {
-    pickedFile = await FilePicker.platform.pickFiles(type: FileType.video);
+    pickedFile = await FilePicker.pickFiles(type: FileType.video);
   }
 
   if (pickedFile != null) {

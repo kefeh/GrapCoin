@@ -1,3 +1,4 @@
+import 'package:grapcoin/src/login/models/authentication_state.dart';
 import 'package:grapcoin/src/login/models/password_reset_state.dart';
 import 'package:grapcoin/src/login/models/password_reset_state_notifier.dart';
 import 'package:grapcoin/src/login/models/phone_auth_state.dart';
@@ -26,3 +27,8 @@ final passwordResetProvider = StateNotifierProvider.autoDispose<
     return PasswordResetNotifier(firebaseAuthService);
   },
 );
+
+final authStateProvider = StreamProvider<AuthenticationState>((ref) {
+  return ref.watch(authServiceProvider).authState;
+});
+

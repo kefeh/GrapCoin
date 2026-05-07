@@ -15,9 +15,8 @@ typedef DocumentSnapShotStream = Stream<DocumentSnapshot<Map<String, dynamic>>>;
 ///global type for a future for either some or none in fpdart
 typedef FpSomeOrNone = Future<Either<FirebaseFailure, Unit>>;
 
-typedef FailureOrChatRoomStream
-    = Either<FirebaseFailure, Stream<List<ChatRoom>>>;
+typedef FailureOrChatRoomStream =
+    Either<FirebaseFailure, Stream<List<ChatRoom>>>;
 
-///map<string, dynamic> typedef that is used for casting firebase document
 ///snapshots when needed
 typedef Json = Map<String, dynamic>;

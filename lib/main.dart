@@ -43,6 +43,7 @@ class MyHomePage extends StatelessWidget {
       await UserService.instance.logIn(user);
     }
     if (user == null) {
+      if (!context.mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -51,7 +52,7 @@ class MyHomePage extends StatelessWidget {
       );
       return;
     }
-    if (Navigator.canPop(context)) {
+    if (context.mounted && Navigator.canPop(context)) {
       Navigator.pop(context);
       return;
     }
@@ -59,6 +60,7 @@ class MyHomePage extends StatelessWidget {
     if (user.emailVerified) {
       Future.microtask(
         () async {
+          if (!context.mounted) return null;
           await Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const PasscodePage(),
@@ -69,6 +71,7 @@ class MyHomePage extends StatelessWidget {
       );
     }
     if (!user.emailVerified) {
+      if (!context.mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -80,9 +83,12 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    loginAndRedirect(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loginAndRedirect(context);
+    });
 
     return const Scaffold(
+
       body: Padding(
         padding: EdgeInsets.all(32.0),
         child: Center(

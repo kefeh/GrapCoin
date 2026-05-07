@@ -8,7 +8,7 @@ import 'package:grapcoin/src/login/routes/welcome_page.dart';
 import 'package:grapcoin/src/login/services/user_service.dart';
 
 class SignoutModalContent extends ConsumerStatefulWidget {
-  const SignoutModalContent({Key? key}) : super(key: key);
+  const SignoutModalContent({super.key});
 
   @override
   ConsumerState<SignoutModalContent> createState() =>
@@ -39,10 +39,7 @@ class _SignoutModalContentState extends ConsumerState<SignoutModalContent> {
               Text(
                 "This action will log you out and you will need to sign in again to access your account.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: black,
-                ),
+                style: TextStyle(fontSize: 12, color: black),
               ),
             ],
           ),
@@ -52,12 +49,13 @@ class _SignoutModalContentState extends ConsumerState<SignoutModalContent> {
           child: Row(
             children: [
               Expanded(
-                  child: ChatButton.outlined(
-                text: "Cancel",
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )),
+                child: ChatButton.outlined(
+                  text: "Cancel",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: ChatButton.primaryDanger(
@@ -74,20 +72,22 @@ class _SignoutModalContentState extends ConsumerState<SignoutModalContent> {
                     setState(() {
                       isLoading = false;
                     });
-                    // ignore: use_build_context_synchronously
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WelcomePage(),
-                      ),
-                      (route) => false,
-                    );
+                    if (!mounted) return;
+                    if (context.mounted) {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomePage(),
+                        ),
+                        (route) => false,
+                      );
+                    }
                   },
                 ),
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

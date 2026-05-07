@@ -7,9 +7,10 @@ class ReversedIcon extends StatelessWidget {
   final IconData icon;
 
   const ReversedIcon({
-    Key? key,
+    super.key,
     required this.icon,
-  }) : super(key: key);
+  });
+
 
   @override
   Widget build(BuildContext context) {

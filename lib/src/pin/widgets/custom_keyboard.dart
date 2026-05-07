@@ -16,7 +16,8 @@ class CustomKeyboard extends StatelessWidget {
     required this.onConfirm,
   });
 
-  renderKeyboard() {
+  List<Widget> renderKeyboard() {
+
     List<List<dynamic>> labels = [
       ['1', '2', '3'],
       ['4', '5', '6'],

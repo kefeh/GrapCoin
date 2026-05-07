@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "111178056428",
-    "project_id": "grapcoin-79dc6",
-    "storage_bucket": "grapcoin-79dc6.appspot.com"
+    "project_number": "986207296345",
+    "project_id": "grapcoing",
+    "storage_bucket": "grapcoing.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:111178056428:android:752a227d4555d956071bc9",
+        "mobilesdk_app_id": "1:986207296345:android:86a9bc154437f0a16c4a48",
         "android_client_info": {
           "package_name": "com.kitendo.grapcoin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "111178056428-dj9fpshnumtkedg2aicv0ccbh35lfse8.apps.googleusercontent.com",
+          "client_id": "986207296345-bobvrm950acrf45susio98dc85ddk8i0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCVxoSwr_BrfX1QmHe-nhsuYKawRrF7WiI"
+          "current_key": "AIzaSyDoKewq3TGDVPfmrymp0qOGWKVIOMUcOTI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "111178056428-dj9fpshnumtkedg2aicv0ccbh35lfse8.apps.googleusercontent.com",
+              "client_id": "986207296345-bobvrm950acrf45susio98dc85ddk8i0.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "111178056428-cgmckp7e6qclcmai6m91am96onk6vdmk.apps.googleusercontent.com",
+              "client_id": "986207296345-f9n2tqqodrk490gtaprfamrs3icggm74.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.kitendo.grapcoin"

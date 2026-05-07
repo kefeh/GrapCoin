@@ -14,15 +14,15 @@ class PasswordResetNotifier extends StateNotifier<PasswordResetState> {
           ),
         );
 
-  onNewPasswordChange(String passwordString) {
+  void onNewPasswordChange(String passwordString) {
     state = state.copyWith(newPassword: Password(passwordString));
   }
 
-  onCurrentPasswordChange(String passwordString) {
+  void onCurrentPasswordChange(String passwordString) {
     state = state.copyWith(currentPassword: Password(passwordString));
   }
 
-  onConfirmNewPasswordChange(String passwordString) {
+  void onConfirmNewPasswordChange(String passwordString) {
     state = state.copyWith(confirmNewPassword: Password(passwordString));
   }
 

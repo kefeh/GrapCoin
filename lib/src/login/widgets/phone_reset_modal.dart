@@ -4,7 +4,7 @@ import 'package:grapcoin/src/constants/colors.dart';
 import 'package:grapcoin/src/core/widgets/chat_button.dart';
 
 class PhoneResetModal extends ConsumerStatefulWidget {
-  const PhoneResetModal({Key? key}) : super(key: key);
+  const PhoneResetModal({super.key});
 
   @override
   ConsumerState<PhoneResetModal> createState() => _PhoneResetModalState();

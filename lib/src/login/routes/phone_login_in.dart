@@ -48,101 +48,10 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
 
-    Future.microtask(() {
-      ref.read(authServiceProvider).authState.listen(
-        (event) {
-          event.maybeMap(
-            orElse: () {
-              setState(() {
-                isLoading = false;
-              });
-            },
-            connected: (_) async {
-              setState(() {
-                isLoading = false;
-              });
-              final user = FirebaseAuth.instance.currentUser;
-              if (user == null) return;
-              if (!user.emailVerified) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const VerifyEmailPage(),
-                    ));
-              } else {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PasscodePage(),
-                    ));
-              }
-            },
-            failed: (value) {
-              setState(() {
-                isLoading = false;
-              });
-              switch (value.error) {
-                case AuthErrorUnknown():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                          Text('An unknown error occured, please try again'),
-                    ),
-                  );
-                  break;
-                case AuthErrorProjectNotFound():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'This project does not seem to exist, please contact your administrator'),
-                    ),
-                  );
-                  break;
-                case AuthErrorUserNotFound():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'You dont seem to have an account, please sign up'),
-                    ),
-                  );
-                  break;
-                case AuthErrorEmailInUse():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'An account associated to this email already exist, please log in'),
-                    ),
-                  );
-                  break;
-                case AuthErrorWrongCredentials():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('The password is not correct, try again'),
-                    ),
-                  );
-                  break;
-                case AuthErrorTooManyRequests():
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Too many attempts at accessing the account, please try again after 5 minutes',
-                      ),
-                    ),
-                  );
-                  break;
-              }
-            },
-            loading: (_) {
-              setState(() {
-                isLoading = true;
-              });
-            },
-          );
-        },
-      );
-    });
+
     super.initState();
   }
+
 
   @override
   void didChangeDependencies() {
@@ -152,7 +61,6 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
 
   @override
   void dispose() {
-    ref.read(authServiceProvider).authState.listen((event) {}).cancel();
     super.dispose();
   }
 
@@ -191,7 +99,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         await ref.watch(authServiceProvider).resetPasswordFromEmail(
               phoneAuthState.email.getOrEmpty(),
             );
-        // ignore: use_build_context_synchronously
+        if (!mounted) return;
         showModalBottomSheet(
           context: context,
           barrierColor: const Color.fromARGB(80, 0, 0, 0),
@@ -204,6 +112,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
           },
         );
       } on FirebaseAuthException catch (e) {
+        if (!mounted) return;
         setState(() {
           isLoading = false;
         });
@@ -257,6 +166,7 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
             break;
         }
       } on Exception {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Something unexpected happened'),
@@ -278,7 +188,8 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
     });
   }
 
-  submit() {
+  void submit() {
+
     emailFocusNode.unfocus();
     nameFocusNode.unfocus();
     passwordFocusNode.unfocus();
@@ -294,18 +205,103 @@ class _PhoneSignInState extends ConsumerState<EmailAndPasswordLogin> {
         : 'Log in to your account to continue';
     final buttonText = widget.isSignUp ? 'Sign Up' : 'Login';
 
-    // ref.listen(
-    //   signUpProvider,
-    //   (previous, next) {
-    //     next.whenOrNull(
-    //       error: (error, _) {
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //           SnackBar(content: Text(error.toString())),
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
+    ref.listen<AsyncValue<AuthenticationState>>(
+      authStateProvider,
+      (previous, next) {
+        next.whenOrNull(
+          data: (event) {
+            event.maybeMap(
+              orElse: () {
+                setState(() {
+                  isLoading = false;
+                });
+              },
+              connected: (_) async {
+                setState(() {
+                  isLoading = false;
+                });
+                final user = FirebaseAuth.instance.currentUser;
+                if (user == null) return;
+                if (!mounted) return;
+                if (!user.emailVerified) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const VerifyEmailPage(),
+                      ));
+                } else {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PasscodePage(),
+                      ));
+                }
+              },
+              failed: (value) {
+                setState(() {
+                  isLoading = false;
+                });
+                switch (value.error) {
+                  case AuthErrorUnknown():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('An unknown error occured, please try again'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorProjectNotFound():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'This project does not seem to exist, please contact your administrator'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorUserNotFound():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'You dont seem to have an account, please sign up'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorEmailInUse():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'An account associated to this email already exist, please log in'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorWrongCredentials():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('The password is not correct, try again'),
+                      ),
+                    );
+                    break;
+                  case AuthErrorTooManyRequests():
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Too many attempts at accessing the account, please try again after 5 minutes',
+                        ),
+                      ),
+                    );
+                    break;
+                }
+              },
+              loading: (_) {
+                setState(() {
+                  isLoading = true;
+                });
+              },
+            );
+          },
+        );
+      },
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

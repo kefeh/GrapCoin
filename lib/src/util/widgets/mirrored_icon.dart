@@ -8,8 +8,9 @@ class MirroredIcon extends StatelessWidget {
 
   const MirroredIcon(
     this.icon, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
 
   @override
   Widget build(BuildContext context) {

@@ -8,10 +8,11 @@ import 'package:grapcoin/src/login/services/user_service.dart';
 
 class DeleteChatModalContent extends ConsumerStatefulWidget {
   const DeleteChatModalContent({
-    Key? key,
+    super.key,
     required this.isMine,
     required this.chatRoom,
-  }) : super(key: key);
+  });
+
   final bool isMine;
   final ChatRoom chatRoom;
 

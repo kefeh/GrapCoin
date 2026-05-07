@@ -15,6 +15,5 @@ typedef DocumentSnapShotStream = Stream<DocumentSnapshot<Map<String, dynamic>>>;
 // typedef FailureOrChatRoomStream
 //     = Either<FirebaseFailure, Stream<List<ChatRoom>>>;
 
-///map<string, dynamic> typedef that is used for casting firebase document
 ///snapshots when needed
 typedef Json = Map<String, dynamic>;

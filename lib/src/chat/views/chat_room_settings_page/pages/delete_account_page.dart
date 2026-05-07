@@ -8,9 +8,7 @@ import 'package:grapcoin/src/util/helpers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DeleteAccountPage extends ConsumerStatefulWidget {
-  const DeleteAccountPage({
-    super.key,
-  });
+  const DeleteAccountPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -69,10 +67,7 @@ class _DeleteAccountPageState extends ConsumerState<DeleteAccountPage> {
                     Text(
                       "Are you sure you want to delete your account? This action can not be undone.",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: black,
-                      ),
+                      style: TextStyle(fontSize: 12, color: black),
                     ),
                   ],
                 ),
@@ -89,14 +84,16 @@ class _DeleteAccountPageState extends ConsumerState<DeleteAccountPage> {
                     setState(() {
                       isLoading = false;
                     });
-                    // ignore: use_build_context_synchronously
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WelcomePage(),
-                      ),
-                      ModalRoute.withName('/'),
-                    );
+                    if (!mounted) return;
+                    if (context.mounted) {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomePage(),
+                        ),
+                        ModalRoute.withName('/'),
+                      );
+                    }
                   } catch (e, stk) {
                     setState(() {
                       isLoading = false;

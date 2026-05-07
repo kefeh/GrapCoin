@@ -19,7 +19,7 @@ class KeyboardKey extends StatefulWidget {
   });
 
   @override
-  _KeyboardKeyState createState() => _KeyboardKeyState();
+  State<KeyboardKey> createState() => _KeyboardKeyState();
 }
 
 class _KeyboardKeyState extends State<KeyboardKey> {
@@ -35,7 +35,7 @@ class _KeyboardKeyState extends State<KeyboardKey> {
     );
   }
 
-  onTapChoice(val) {
+  void onTapChoice(String val) {
     if (widget.label is String) widget.onTap(val);
     if (widget.label is BackspaceIcon) widget.onBackspacePress();
     if (widget.label is TextButton) widget.onConfirm();
@@ -47,15 +47,13 @@ class _KeyboardKeyState extends State<KeyboardKey> {
       child: widget.label is OkButton
           ? OkButton(onTap: widget.onConfirm)
           : InkWell(
-              splashColor: purple.withOpacity(0.2),
+              splashColor: purple.withValues(alpha: 0.2),
               onTap: () {
                 onTapChoice(widget.label);
               },
               child: AspectRatio(
                 aspectRatio: 1.5,
-                child: Center(
-                  child: renderLabel(),
-                ),
+                child: Center(child: renderLabel()),
               ),
             ),
     );
